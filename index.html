@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="title" content="GLOSS" />
+  <meta name="description"
+    content="GLOSS: Geometric Local Self-Similarity Learning for Faithful Reference-Guided Texture Fill." />
+  <meta property="og:title" content="GLOSS: Geometric Local Self-Similarity Learning for Faithful Reference-Guided Texture Fill" />
+  <meta property="og:description" content="A local, less data-hungry approach to reference-guided 3D texture fill." />
+  <meta property="og:image" content="assets/teaser.png" />
+  <meta property="og:type" content="website" />
+  <title>GLOSS: Geometric Local Self-Similarity Learning for Faithful Reference-Guided Texture Fill</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <!-- Fixed table of contents. -->
+  <div class="toc">
+    <h3>Content</h3>
+    <hr />
+    <ul>
+      <li><a href="#teaser">Overview</a></li>
+      <li><a href="#abstract">Abstract</a></li>
+      <li><a href="#video">Video</a></li>
+      <li><a href="#bibtex">BibTeX</a></li>
+    </ul>
+  </div>
+
+  <div class="main-content">
+    <div class="venue-line"><span class="venue">SIGGRAPH Asia 2026</span></div>
+    <div class="hero-text">GLOSS</div>
+    <div class="sub-hero-text">Geometric Local Self-Similarity Learning for<br />Faithful Reference-Guided Texture Fill</div>
+
+    <!-- TODO: replace with the final author list. Superscripts key to .affil-note below. -->
+    <div class="authors">
+      <a href="https://chenyue-cai.com/" target="_blank" rel="noopener">Chenyue Cai</a><sup>1</sup>
+    </div>
+    <div class="affil-note"><sup>1</sup>Princeton University</div>
+
+    <div class="quick-links">
+      <a class="disabled" href="#" aria-disabled="true">[arXiv]</a>
+      <a class="disabled" href="#" aria-disabled="true">[Code (coming soon)]</a>
+      <a href="#video">[Video]</a>
+    </div>
+
+    <!-- Teaser figure. -->
+    <img id="teaser" class="teaser-figure" src="assets/teaser.png"
+      alt="GLOSS teaser: reference-guided texture fill results." />
+    <p class="figure-caption">
+      <b>GLOSS</b> learns a shape-specific local texture generation and completion model from image priors and a
+      single shape, guided by geometry-aware reference patches. It transfers any novel reference to the full target
+      texture through patchwise inpainting, and generalizes to PBR materials and unseen meshes.
+    </p>
+
+    <div class="tagline" id="abstract">Abstract.</div>
+    <div class="section">
+      Using conditional image generators, texture artists can explore many single-view looks for an existing 3D
+      shape. Despite impressive progress, state-of-the-art generative methods still struggle to generate a full
+      object texture while closely adhering to fine scaled geometric detail and single-view references, and leave
+      little room for artist guidance. Furthermore, current automatic models lack the flexibility for artists to
+      explore multiple textures from varied sources in an interactive and controllable manner. Unlike methods trained
+      on large 3D datasets that generate full object textures from global guidance, our work explores a local and
+      less data-hungry approach to texture on a more specific class of texture. We leverage the geometric
+      self-similarity and geometry-texture correlation of natural and man-made shapes and train a shape-specific
+      local texture generation and completion model. This model learns from existing image model priors and a single
+      shape, and is guided by attending to a set of geometry-aware reference patches. The trained shape-specific
+      network can transfer any novel reference to the full target object texture through patchwise inpainting. We show
+      improved or comparable quality to strong image-conditioned texture generation baselines, suggesting local
+      texturing as a promising research direction. Our model also enables local geometry-conditioned texture
+      inpainting, guided by artist-selected references, and generalizes to PBR materials and unseen meshes for texture
+      transfer. We piloted our novel texture fill capability as a Blender addon with several 3D texturing
+      professionals who reported positive feedback on the model's controllability, practical usefulness, and creative
+      affordances.
+    </div>
+
+    <div class="tagline" id="video">Video.</div>
+    <div class="section">
+      <video id="teaser-video" src="assets/gloss-video.mp4" poster="assets/video-poster.jpg"
+        controls preload="metadata" playsinline></video>
+    </div>
+
+    <div class="bibtex-code" id="bibtex">
+      <div class="bibtex-title">BibTeX</div>
+      <pre><code>@article{cai2026gloss,
+  title   = {GLOSS: Geometric Local Self-Similarity Learning for
+             Faithful Reference-Guided Texture Fill},
+  author  = {Cai, Chenyue},
+  journal = {ACM Transactions on Graphics (SIGGRAPH Asia)},
+  year    = {2026}
+}</code></pre>
+    </div>
+
+  </div> <!-- End of main-content -->
+
+  <div class="footer">
+    &copy; Princeton University &nbsp;|&nbsp; Webpage template adapted from
+    <a href="https://linzhanm.github.io/unimate/" target="_blank" rel="noopener">UniMate</a> /
+    <a href="https://github.com/videomimic-1/videomimic-1.github.io" target="_blank" rel="noopener">VideoMimic</a>.
+  </div>
+
+  <!-- TOC scroll-spy: light up the rail beside the section currently in view. -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const links = [...document.querySelectorAll('.toc a')];
+      const sections = new Map();
+      links.forEach((a) => {
+        const el = document.getElementById(a.getAttribute('href').slice(1));
+        if (el) sections.set(el, a);
+      });
+      if (!sections.size) return;
+
+      const visible = new Set();
+      const setActive = (a) => {
+        if (!a) return;
+        links.forEach((l) => l.classList.toggle('active', l === a));
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((e) => e.isIntersecting ? visible.add(e.target) : visible.delete(e.target));
+        for (const [el, a] of sections) {
+          if (visible.has(el)) { setActive(a); return; }
+        }
+      }, { rootMargin: '0px 0px -78% 0px', threshold: 0 });
+
+      sections.forEach((_, el) => observer.observe(el));
+      setActive(sections.values().next().value);
+    });
+  </script>
+</body>
+
+</html>
