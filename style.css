@@ -191,22 +191,22 @@ button:focus-visible {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 48px;
-  margin: 22px 0 6px;
+  gap: 36px;
+  margin: 18px 0 6px;
 }
 .affiliations img {
   width: auto;
-  height: 46px;
+  height: 26px;
   border: 0;
   border-radius: 0;
   margin: 0;
 }
-.affiliations img.logo-lg { height: 84px; }
+.affiliations img.logo-lg { height: 52px; }
 
 @media (max-width: 600px) {
-  .affiliations { gap: 32px; }
-  .affiliations img { height: 34px; }
-  .affiliations img.logo-lg { height: 60px; }
+  .affiliations { gap: 26px; }
+  .affiliations img { height: 20px; }
+  .affiliations img.logo-lg { height: 40px; }
 }
 
 /* Venue eyebrow stamp. */
