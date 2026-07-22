@@ -186,6 +186,29 @@ button:focus-visible {
   margin: 0 0 6px;
 }
 
+/* Affiliation logos — no figure border. */
+.affiliations {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 48px;
+  margin: 22px 0 6px;
+}
+.affiliations img {
+  width: auto;
+  height: 46px;
+  border: 0;
+  border-radius: 0;
+  margin: 0;
+}
+.affiliations img.logo-lg { height: 84px; }
+
+@media (max-width: 600px) {
+  .affiliations { gap: 32px; }
+  .affiliations img { height: 34px; }
+  .affiliations img.logo-lg { height: 60px; }
+}
+
 /* Venue eyebrow stamp. */
 .venue-line { margin-bottom: 14px; }
 .venue {
