@@ -1008,7 +1008,6 @@ pre.bib {
   .video-grid.three-up,
   .video-grid,
   .concepts,
-  .pbr-split,
   .viewer-row { grid-template-columns: minmax(0, 1fr); }
 
   /* --- contact sheets, two up --------------------------------
@@ -1028,22 +1027,37 @@ pre.bib {
      the first cell still lines up with the text above it. The
      cell is sized under a full screen on purpose: the sliver of
      the next one is what says the row can be swiped. */
+  .pbr-split,
   .pbr-grid.three,
   .pbr-grid.four,
   .pbr-grid.five,
   .pbr-grid.six {
     grid-template-columns: none;
     grid-auto-flow: column;
-    grid-auto-columns: 78vw;
+    grid-auto-columns: 39vw;
     overflow-x: auto;
     overscroll-behavior-x: contain;
-    scroll-snap-type: x mandatory;
+    scroll-snap-type: x proximity;
     scroll-padding-left: 22px;
     -webkit-overflow-scrolling: touch;
     margin-left: -22px;
     margin-right: -22px;
     padding: 0 22px 4px;
   }
+
+  /* 4.2 is two groups of three inside a split. On a desktop the
+     split sets them side by side and they read as one band; left
+     to stack they would become two separate rows on a phone.
+     Dissolving the two inner grids makes their six cells direct
+     children of the split, so the section is the single row it
+     looks like at full width. */
+  .pbr-split > .pbr-grid { display: contents; }
+  .pbr-split .tri-side::before { display: none; }
+  /* the tri cells are shorter than the rest; without this they
+     centre themselves and sit half a card lower than their row */
+  .pbr-split { align-items: start; }
+
+  .pbr-split .pbr-cell,
   .pbr-grid.three > *,
   .pbr-grid.four  > *,
   .pbr-grid.five  > *,
@@ -1054,11 +1068,11 @@ pre.bib {
      covers a third of a phone cell. Shrink the disc, but keep the
      tap target at 44px with a transparent halo — the control gets
      smaller to look at, not harder to hit. */
-  .pbr-arrow { width: 26px; height: 26px; }
-  .pbr-arrow svg { width: 13px; height: 13px; }
-  .pbr-arrow.prev { left: 5px; }
-  .pbr-arrow.next { right: 5px; }
-  .pbr-arrow::after { content: ""; position: absolute; inset: -9px; }
+  .pbr-arrow { width: 22px; height: 22px; }
+  .pbr-arrow svg { width: 11px; height: 11px; }
+  .pbr-arrow.prev { left: 4px; }
+  .pbr-arrow.next { right: 4px; }
+  .pbr-arrow::after { content: ""; position: absolute; inset: -11px; }
   .pbr-dots { padding: 7px 0 9px; }
 
   /* --- the baseline filmstrip --------------------------------
