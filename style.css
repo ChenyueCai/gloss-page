@@ -1183,3 +1183,9 @@ pre.bib {
 /* A statement about a co-author's own standing, not an affiliation —
    it gets its own line so it is not read as one more institution. */
 .affil-note { display: block; margin-top: 5px; color: var(--ink-3); }
+
+/* 4.2 and 4.3 carry sentences, not labels. Same face and scale as the
+   4.4 mini-titles so the section reads as one family, but set in
+   sentence case — and without the wide tracking, which exists to open
+   up uppercase and only loosens lowercase past reading. */
+.mini-title.sentence { text-transform: none; letter-spacing: 0.02em; }
