@@ -1014,12 +1014,40 @@ pre.bib {
   /* --- contact sheets, two up --------------------------------
      Here the comparison IS the content, so the grid survives —
      just at a count that leaves each cell big enough to read. */
+  .as-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  /* --- 4.1 – 4.3: one row, swiped ----------------------------
+     Folding these to two columns still left every cell at 163px,
+     which is not enough of a result to be worth looking at. A
+     single scrolling row gives each cell most of the screen and
+     keeps the set in the order it was authored — you swipe from
+     one reference to the next instead of reading a wall.
+
+     The track bleeds to both screen edges by exactly the page
+     gutter, so the row reads as continuing past the frame while
+     the first cell still lines up with the text above it. The
+     cell is sized under a full screen on purpose: the sliver of
+     the next one is what says the row can be swiped. */
   .pbr-grid.three,
-  .pbr-grid.three.tri-side,
   .pbr-grid.four,
   .pbr-grid.five,
-  .pbr-grid.six,
-  .as-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pbr-grid.six {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: 78vw;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: 22px;
+    -webkit-overflow-scrolling: touch;
+    margin-left: -22px;
+    margin-right: -22px;
+    padding: 0 22px 4px;
+  }
+  .pbr-grid.three > *,
+  .pbr-grid.four  > *,
+  .pbr-grid.five  > *,
+  .pbr-grid.six   > * { scroll-snap-align: start; }
 
   /* --- the stepper controls ----------------------------------
      A 32px disc that sat comfortably on a 260px desktop cell
