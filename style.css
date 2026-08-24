@@ -1125,7 +1125,7 @@ pre.bib {
 .geo-row {
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: 520px;
+  grid-auto-columns: 400px;   /* five tiles at ~80px, matching the patch size in 3.2.1 */
   gap: 26px;
   margin-top: 30px;
   overflow-x: auto;
@@ -1141,14 +1141,26 @@ pre.bib {
 .geo-cols,
 .geo-labels {
   display: grid;
-  grid-template-columns: 1fr 1fr 14px 1fr 1fr 1fr;
-  gap: 4px;
+  grid-template-columns: repeat(5, 1fr);
 }
+/* the five columns are stitched flush, the way they came off the
+   render, so the strip reads as one frame rather than five cards */
 .geo-cols img {
   width: 100%; display: block;
-  border-radius: 3px;
   background: var(--bg);
 }
+
+/* the last column is the output, so it is bracketed rather than
+   merely labelled - drawn inside the column so the stitch holds */
+.geo-hi { position: relative; display: block; }
+.geo-hi::before,
+.geo-hi::after {
+  content: ""; position: absolute; top: 0; bottom: 0; width: 9px;
+  border: 2px solid var(--accent-2);
+  pointer-events: none;
+}
+.geo-hi::before { left: 0;  border-right: 0; border-radius: 3px 0 0 3px; }
+.geo-hi::after  { right: 0; border-left: 0;  border-radius: 0 3px 3px 0; }
 .geo-labels { margin-top: 10px; }
 .geo-labels span {
   font-family: var(--font-mono); font-size: var(--fs-mono-xs);
@@ -1167,3 +1179,7 @@ pre.bib {
     gap: 20px;
   }
 }
+
+/* A statement about a co-author's own standing, not an affiliation —
+   it gets its own line so it is not read as one more institution. */
+.affil-note { display: block; margin-top: 5px; color: var(--ink-3); }

@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>GLOSS: Geometric Local Self-Similarity Learning for Faithful Reference-Guided Texture Fill</title>
+<title>GLOSS: Geometric Local Self-Similarity Learning for Faithful Reference-guided Texture Fill</title>
 <meta name="description" content="GLOSS learns a shape-specific local texture model from a single 3D shape and image priors, enabling reference-guided texture fill with strong geometry-texture consistency.">
-<meta property="og:title" content="GLOSS: Geometric Local Self-Similarity Learning for Faithful Reference-Guided Texture Fill">
+<meta property="og:title" content="GLOSS: Geometric Local Self-Similarity Learning for Faithful Reference-guided Texture Fill">
 <meta property="og:description" content="Reference-guided 3D texture fill from a single shape. SIGGRAPH Asia 2026.">
 <meta property="og:image" content="assets/img/teaser.jpg">
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
@@ -27,21 +27,23 @@
     </div>
 
     <!-- The five highlighted letters fly forward and assemble "GLOSS:" -->
-    <h1 class="hero-title" aria-label="GLOSS: Geometric Local Self-Similarity Learning faithful reference-guided texture fill from a single shape">
+    <h1 class="hero-title" aria-label="GLOSS: Geometric Local Self-Similarity Learning for Faithful Reference-guided Texture Fill">
       <span class="title-line" aria-hidden="true"><span class="gl-prefix"><i data-src="s0">G</i><i data-src="s1">L</i><i data-src="s2">O</i><i data-src="s3">S</i><i data-src="s4">S</i><i class="colon">:</i></span><span
         class="gl-phrase"><span class="gl" id="s0">G</span>eometric <span class="gl" id="s1">L</span><span class="gl" id="s2">o</span>cal <span class="gl" id="s3">S</span>elf-<span class="gl" id="s4">S</span>imilarity</span></span>
-      <span class="title-tag" aria-hidden="true"> Learning faithful reference-guided texture fill from a single shape</span>
+      <span class="title-tag" aria-hidden="true"> Learning for Faithful Reference-guided Texture Fill</span>
     </h1>
 
     <p class="authors">
       <a class="au-o" href="https://chenyue-cai.com/" target="_blank" rel="noopener">Chenyue Cai</a><sup>1*</sup>,
       <span class="au-g">Anita Hu</span><sup>2</sup>, <a class="au-g" href="https://www.cs.toronto.edu/~jlucas/" target="_blank" rel="noopener">James Lucas</a><sup>2</sup>,
       <a class="au-o" href="https://www.cs.princeton.edu/~smr/" target="_blank" rel="noopener">Szymon Rusinkiewicz</a><sup>1</sup>,
-      <a class="au-g" href="https://shumash.com/" target="_blank" rel="noopener">Masha Shugrina</a><sup>2</sup>
+      <a class="au-g" href="https://shumash.com/" target="_blank" rel="noopener">Masha Shugrina</a><sup>2&dagger;</sup>
     </p>
     <p class="affils">
       <sup>1</sup> Princeton University &nbsp;&nbsp; <sup>2</sup> NVIDIA &nbsp;&nbsp;
       <sup>*</sup> Work done during an internship at NVIDIA
+      <span class="affil-note"><sup>&dagger;</sup> In support of more inclusive conference locations,
+      this author removed herself from the SIGGRAPH Asia 2026 publication</span>
     </p>
 
     <nav class="links">
@@ -203,7 +205,7 @@
       </div>
     </div>
 
-    <h3 class="sub-title" style="margin-top:44px"><span class="sub-num">2.2</span> Blending and second thoughts</h3>
+    <h3 class="sub-title" style="margin-top:44px"><span class="sub-num">2.2</span> Artist user study clips</h3>
 
     <div class="video-grid three-up">
       <div class="video-card">
@@ -269,52 +271,48 @@
         <div class="geo-cols">
         <img src="assets/img/geo/p1_ref_albedo.webp" alt="dragon horn and scales: reference albedo" loading="lazy">
         <img src="assets/img/geo/p1_ref_geom.webp" alt="dragon horn and scales: reference geometry" loading="lazy">
-        <i class="geo-gap" aria-hidden="true"></i>
         <img src="assets/img/geo/p1_tar_albedo.webp" alt="dragon horn and scales: target albedo" loading="lazy">
         <img src="assets/img/geo/p1_tar_geom.webp" alt="dragon horn and scales: target geometry" loading="lazy">
-        <img src="assets/img/geo/p1_result.webp" alt="dragon horn and scales: result" loading="lazy">
+        <span class="geo-hi"><img src="assets/img/geo/p1_result.webp" alt="dragon horn and scales: result" loading="lazy"></span>
         </div>
         <div class="geo-labels">
-          <span>Ref Albedo</span><span>Ref Geometry</span><i class="geo-gap" aria-hidden="true"></i><span>Tar Albedo</span><span>Tar Geometry</span><span>Result</span>
+          <span>Ref Albedo</span><span>Ref Geometry</span><span>Tar Albedo</span><span>Tar Geometry</span><span>Result</span>
         </div>
       </figure>
       <figure class="geo-panel">
         <div class="geo-cols">
         <img src="assets/img/geo/p2_ref_albedo.webp" alt="dragon neck scales: reference albedo" loading="lazy">
         <img src="assets/img/geo/p2_ref_geom.webp" alt="dragon neck scales: reference geometry" loading="lazy">
-        <i class="geo-gap" aria-hidden="true"></i>
         <img src="assets/img/geo/p2_tar_albedo.webp" alt="dragon neck scales: target albedo" loading="lazy">
         <img src="assets/img/geo/p2_tar_geom.webp" alt="dragon neck scales: target geometry" loading="lazy">
-        <img src="assets/img/geo/p2_result.webp" alt="dragon neck scales: result" loading="lazy">
+        <span class="geo-hi"><img src="assets/img/geo/p2_result.webp" alt="dragon neck scales: result" loading="lazy"></span>
         </div>
         <div class="geo-labels">
-          <span>Ref Albedo</span><span>Ref Geometry</span><i class="geo-gap" aria-hidden="true"></i><span>Tar Albedo</span><span>Tar Geometry</span><span>Result</span>
+          <span>Ref Albedo</span><span>Ref Geometry</span><span>Tar Albedo</span><span>Tar Geometry</span><span>Result</span>
         </div>
       </figure>
       <figure class="geo-panel">
         <div class="geo-cols">
         <img src="assets/img/geo/p3_ref_albedo.webp" alt="leaf veins: reference albedo" loading="lazy">
         <img src="assets/img/geo/p3_ref_geom.webp" alt="leaf veins: reference geometry" loading="lazy">
-        <i class="geo-gap" aria-hidden="true"></i>
         <img src="assets/img/geo/p3_tar_albedo.webp" alt="leaf veins: target albedo" loading="lazy">
         <img src="assets/img/geo/p3_tar_geom.webp" alt="leaf veins: target geometry" loading="lazy">
-        <img src="assets/img/geo/p3_result.webp" alt="leaf veins: result" loading="lazy">
+        <span class="geo-hi"><img src="assets/img/geo/p3_result.webp" alt="leaf veins: result" loading="lazy"></span>
         </div>
         <div class="geo-labels">
-          <span>Ref Albedo</span><span>Ref Geometry</span><i class="geo-gap" aria-hidden="true"></i><span>Tar Albedo</span><span>Tar Geometry</span><span>Result</span>
+          <span>Ref Albedo</span><span>Ref Geometry</span><span>Tar Albedo</span><span>Tar Geometry</span><span>Result</span>
         </div>
       </figure>
       <figure class="geo-panel">
         <div class="geo-cols">
         <img src="assets/img/geo/p4_ref_albedo.webp" alt="lizard scales and eye: reference albedo" loading="lazy">
         <img src="assets/img/geo/p4_ref_geom.webp" alt="lizard scales and eye: reference geometry" loading="lazy">
-        <i class="geo-gap" aria-hidden="true"></i>
         <img src="assets/img/geo/p4_tar_albedo.webp" alt="lizard scales and eye: target albedo" loading="lazy">
         <img src="assets/img/geo/p4_tar_geom.webp" alt="lizard scales and eye: target geometry" loading="lazy">
-        <img src="assets/img/geo/p4_result.webp" alt="lizard scales and eye: result" loading="lazy">
+        <span class="geo-hi"><img src="assets/img/geo/p4_result.webp" alt="lizard scales and eye: result" loading="lazy"></span>
         </div>
         <div class="geo-labels">
-          <span>Ref Albedo</span><span>Ref Geometry</span><i class="geo-gap" aria-hidden="true"></i><span>Tar Albedo</span><span>Tar Geometry</span><span>Result</span>
+          <span>Ref Albedo</span><span>Ref Geometry</span><span>Tar Albedo</span><span>Tar Geometry</span><span>Result</span>
         </div>
       </figure>
     </div>
@@ -416,6 +414,9 @@
     </div>
 
     <h3 class="sub-title"><span class="sub-num">4.2</span> Zero-shot PBR</h3>
+    <h4 class="mini-title">A model trained on texture can be used for PBR generation, padding the metallic
+      and roughness channels with ones as pseudo RGB. The model retains the material&ndash;geometry
+      correlation from the source.</h4>
     <div class="pbr-split">
       <div class="pbr-grid three">
       <div class="pbr-cell" data-swap="cabbage">
@@ -511,6 +512,8 @@
     </div>
 
     <h3 class="sub-title"><span class="sub-num">4.3</span> Zero-shot transfer to unseen mesh</h3>
+    <h4 class="mini-title">A model trained on a single shape transfers the learned geometry&ndash;texture
+      correlation to unseen shapes.</h4>
     <div class="pbr-grid six">
       <div class="pbr-cell">
         <div class="pbr-stage">
@@ -739,7 +742,7 @@
     <div class="section-head"><span class="section-num">05</span><h2 class="section-title">BibTeX</h2></div>
     <pre class="bib">@inproceedings{cai2026gloss,
   title     = {GLOSS: Geometric Local Self-Similarity Learning for
-               Faithful Reference-Guided Texture Fill},
+               Faithful Reference-guided Texture Fill},
   author    = {Cai, Chenyue and Hu, Anita and Lucas, James and
                Rusinkiewicz, Szymon},
   booktitle = {SIGGRAPH Asia 2026 Conference Papers},
