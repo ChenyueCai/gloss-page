@@ -353,17 +353,32 @@ pre.bib {
 
 /* Both pairs stand at once, side by side: what is taken out, struck through,
    next to what replaces it. Each pair keeps its own accent. */
+/* One claim per line. The words are static; only the strike is animated, so
+   the reader sees the old idea being crossed out rather than text appearing. */
 .tldr-swaps {
-  margin: 14px 0 0 32px; display: flex; flex-wrap: wrap; gap: 10px 34px;
+  margin: 14px 0 0 32px; display: flex; flex-direction: column; gap: 8px;
+  align-items: flex-start;
 }
 .swap {
   font-family: var(--font-mono); font-size: var(--fs-mono-lg);
   line-height: 1.5; margin: 0; color: var(--ink-3);
   display: flex; align-items: baseline; gap: 9px;
 }
-.swap-out { text-decoration-line: line-through; text-decoration-thickness: 1.5px; }
-.swap .swap-out { text-decoration-color: var(--accent-2); }
-.swap.alt .swap-out { text-decoration-color: var(--accent); }
+/* the rule is drawn rather than declared, so it can sweep across on cue.
+   text-decoration cannot be animated, hence the pseudo-element. */
+.swap-out { position: relative; text-decoration: none; }
+.swap-out::after {
+  content: ""; position: absolute; left: 0; right: 0; top: 0.62em; height: 1.5px;
+  background: currentColor; transform: scaleX(0); transform-origin: left center;
+  transition: transform .75s cubic-bezier(.4,.05,.2,1);
+}
+.tldr-swaps.struck .swap-out::after { transform: scaleX(1); }
+.tldr-swaps.struck .swap:nth-child(2) .swap-out::after { transition-delay: .28s; }
+.swap .swap-out { color: var(--accent-2); }
+.swap.alt .swap-out { color: var(--accent); }
+@media (prefers-reduced-motion: reduce) {
+  .swap-out::after { transition: none; }
+}
 .swap-sep { color: var(--ink-3); }
 .swap-in { color: var(--accent-2); }
 .swap.alt .swap-in { color: var(--accent); }
@@ -394,31 +409,38 @@ pre.bib {
 .abstract-body p:last-child { margin-bottom: 0; }
 .abstract-body b { color: var(--ink); font-weight: 600; }
 
-/* ---- the three ideas the method rests on, as compact points ---- */
+/* ---- the three ideas the method rests on, as tiles ----
+   Cards rather than bare points, so the three read as a set of claims you can
+   take one at a time. No icons: the titles carry them. */
 .concepts {
   list-style: none; padding: 0;
   display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 26px; margin: 30px 0 0 32px; max-width: 96ch;
+  gap: 18px; margin: 30px 0 0 32px; max-width: 96ch;
 }
-/* icon sits above the label so heading and copy share the abstract's left edge */
-.concept { display: block; margin: 0; }
-.c-icon {
-  display: block; width: 24px; height: 24px; margin: 0 0 9px;
-  fill: none; stroke: var(--accent); stroke-width: 1.5;
-  stroke-linecap: round; stroke-linejoin: round;
+.concept {
+  margin: 0;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 22px 22px 24px;
+  transition: border-color .2s ease, transform .2s ease;
 }
-.c-icon .c-fill { stroke: var(--accent-2); stroke-width: 1.8; }
-.concept div {
-  font-size: 13.5px; line-height: 1.55; color: var(--ink-3); text-wrap: pretty;
+.concept:hover { border-color: var(--accent); transform: translateY(-2px); }
+.concept-title {
+  margin: 0 0 9px;
+  font-family: var(--font-display); font-weight: 600;
+  font-size: var(--fs-h3); letter-spacing: -0.01em; line-height: 1.22;
+  color: var(--ink); text-wrap: balance;
 }
-.concept b {
-  display: block; color: var(--ink); font-family: var(--font-display);
-  font-weight: 500; font-size: 14.5px; letter-spacing: -0.01em; margin-bottom: 3px;
+.concept-body {
+  margin: 0;
+  font-size: var(--fs-xs); line-height: 1.6;
+  color: var(--ink-2); text-wrap: pretty;
 }
 
 @media (max-width: 1000px) {
   .abstract-body { font-size: 16px; max-width: none; }
-  .concepts { grid-template-columns: 1fr; margin-left: 0; }
+  .concepts { grid-template-columns: 1fr; margin-left: 0; gap: 14px; }
 }
 
 .figure-plate { margin-top: 22px; }
@@ -945,3 +967,16 @@ pre.bib {
    against each other rather than both hanging from the top. */
 .pbr-split { align-items: center; }
 
+
+/* ---- artist intent: the decision behind each clip, in the artist's voice ---- */
+.vc-intent {
+  display: flex; align-items: flex-start; gap: 8px;
+  margin: 7px 13px 13px;
+  font-size: var(--fs-xs); line-height: 1.5; font-style: italic;
+  color: var(--ink-2); text-wrap: pretty;
+}
+.intent-icon {
+  flex: none; width: 15px; height: 15px; margin-top: 2px;
+  fill: none; stroke: var(--accent-2); stroke-width: 1.6;
+  stroke-linecap: round; stroke-linejoin: round;
+}

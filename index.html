@@ -35,9 +35,9 @@
 
     <p class="authors">
       <a class="au-o" href="https://chenyue-cai.com/" target="_blank" rel="noopener">Chenyue Cai</a><sup>1*</sup>,
-      <span class="au-g">Anita Hu</span><sup>2</sup>, <span class="au-g">James Lucas</span><sup>2</sup>,
+      <span class="au-g">Anita Hu</span><sup>2</sup>, <a class="au-g" href="https://www.cs.toronto.edu/~jlucas/" target="_blank" rel="noopener">James Lucas</a><sup>2</sup>,
       <a class="au-o" href="https://www.cs.princeton.edu/~smr/" target="_blank" rel="noopener">Szymon Rusinkiewicz</a><sup>1</sup>,
-      <span class="au-g">Masha Shugrina</span><sup>2</sup>
+      <a class="au-g" href="https://shumash.com/" target="_blank" rel="noopener">Masha Shugrina</a><sup>2</sup>
     </p>
     <p class="affils">
       <sup>1</sup> Princeton University &nbsp;&nbsp; <sup>2</sup> NVIDIA &nbsp;&nbsp;
@@ -47,7 +47,7 @@
     <nav class="links">
       <a class="btn primary" href="assets/paper/gloss.pdf" target="_blank" rel="noopener">arXiv</a>
       <a class="btn" href="#demos">Video</a>
-      <span class="btn soon">Code</span>
+      <a class="btn" href="https://github.com/ChenyueCai/GLOSS" target="_blank" rel="noopener">Code</a>
       <span class="btn soon">Blender add-on</span>
       <a class="btn" href="#bibtex">BibTeX</a>
     </nav>
@@ -70,7 +70,6 @@
       <p class="swap"><s class="swap-out">automatic in &#8594; out pipeline</s><span class="swap-sep">&#8594;</span><span class="swap-in">artist-controlled fine control</span></p>
       <p class="swap alt"><s class="swap-out">hallucinated texture</s><span class="swap-sep">&#8594;</span><span class="swap-in">faithful texture</span></p>
     </div>
-    <p class="caption">What GLOSS takes out, and what it puts in its place.</p>
   </div>
 
 </section>
@@ -106,27 +105,16 @@
     <!-- The three ideas the method rests on, as compact points. -->
     <ul class="concepts">
       <li class="concept">
-        <svg class="c-icon" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M2 16 a3 3 0 0 1 6 0"/><path d="M8 16 a3 3 0 0 1 6 0"/><path d="M14 16 a3 3 0 0 1 6 0"/>
-          <path d="M5 10 a3 3 0 0 1 6 0"/><path d="M11 10 a3 3 0 0 1 6 0"/>
-        </svg>
-        <div><b>Geometry self-similarity</b>Shapes repeat locally, so a region already seen constrains one that has not.</div>
+        <h3 class="concept-title">Geometry self-similarity</h3>
+        <p class="concept-body">Shapes repeat locally, so a region already seen constrains one that has not.</p>
       </li>
       <li class="concept">
-        <svg class="c-icon" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M1.5 18 C 6 12, 9 20, 13.5 14 S 20 9, 22.5 12"/>
-          <rect x="9" y="4" width="9" height="9" rx="1.5"/>
-          <path d="M11 10.5 a2 2 0 0 1 4 0" class="c-fill"/>
-        </svg>
-        <div><b>Local geometry&ndash;texture prior</b>Conditioned on the surface underneath, so a reference lands aligned to it.</div>
+        <h3 class="concept-title">Local geometry&ndash;texture prior</h3>
+        <p class="concept-body">Conditioned on the surface underneath, so a reference lands aligned to it.</p>
       </li>
       <li class="concept">
-        <svg class="c-icon" viewBox="0 0 24 24" aria-hidden="true">
-          <circle cx="9" cy="12" r="6"/>
-          <path d="M6 13.5 a3 3 0 0 1 6 0"/>
-          <rect x="17" y="8" width="6" height="8" rx="1.2" stroke-dasharray="2.4 2"/>
-        </svg>
-        <div><b>Shape-specific, small data</b>One shape and an off-the-shelf image model &mdash; no textured 3D corpus.</div>
+        <h3 class="concept-title">Shape-specific, small data</h3>
+        <p class="concept-body">One shape and an off-the-shelf image model &mdash; no textured 3D corpus.</p>
       </li>
     </ul>
   </div>
@@ -153,32 +141,32 @@
       <div class="video-card">
         <video src="assets/video/head_red.mp4" poster="assets/video/head_red.jpg" muted loop playsinline preload="none"></video>
         <div class="vc-label">Red reference &middot; the face marking</div>
-        <p class="vc-note">Over the finished blue, the artist selects the cheek and brow and fills them from a rust-red reference. It is the one warm note on the head, placed to echo the orange throat and keep the face from reading as a single cold mass.</p>
+        <p class="vc-intent"><svg class="intent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.6 3.4a2.1 2.1 0 0 1 3 3L11 14l-3-3z"/><path d="M8 11l3 3-1.4 1.4a3 3 0 0 1-2.1.9H5l-.9 2.2a1 1 0 0 1-1.4-1.4L5 15.5v-2.4a3 3 0 0 1 .9-2.1z"/></svg><span>why don&rsquo;t we paint the dragon head red?</span></p>
       </div>
       <div class="video-card">
         <video src="assets/video/head_green.mp4" poster="assets/video/head_green.jpg" muted loop playsinline preload="none"></video>
         <div class="vc-label">Green reference &middot; carrying the neck up</div>
-        <p class="vc-note">The neck is already green-scaled from the body pass. One more selection extends that scaling toward the skull, so the head does not begin at an arbitrary line &mdash; the artist is deciding where the body&rsquo;s material should stop.</p>
+        <p class="vc-intent"><svg class="intent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.6 3.4a2.1 2.1 0 0 1 3 3L11 14l-3-3z"/><path d="M8 11l3 3-1.4 1.4a3 3 0 0 1-2.1.9H5l-.9 2.2a1 1 0 0 1-1.4-1.4L5 15.5v-2.4a3 3 0 0 1 .9-2.1z"/></svg><span>how about green scales over the blue ones up top?</span></p>
       </div>
       <div class="video-card">
         <video src="assets/video/head_blue.mp4" poster="assets/video/head_blue.jpg" muted loop playsinline preload="none"></video>
         <div class="vc-label">Blue reference &middot; the crown</div>
-        <p class="vc-note">The skull is filled patch by patch from an iridescent blue-green reference, the camera orbiting between fills so each patch is judged against the silhouette. This is the colour that fixes the creature&rsquo;s identity, and it is deliberately cold against the orange throat.</p>
+        <p class="vc-intent"><svg class="intent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.6 3.4a2.1 2.1 0 0 1 3 3L11 14l-3-3z"/><path d="M8 11l3 3-1.4 1.4a3 3 0 0 1-2.1.9H5l-.9 2.2a1 1 0 0 1-1.4-1.4L5 15.5v-2.4a3 3 0 0 1 .9-2.1z"/></svg><span>the skull wants something cold &mdash; iridescent blue-green.</span></p>
       </div>
       <div class="video-card">
         <video src="assets/video/fin1.mp4" poster="assets/video/fin1.jpg" muted loop playsinline preload="none"></video>
         <div class="vc-label">Crest fins &middot; the first accent</div>
-        <p class="vc-note">A yellow-green membrane reference goes onto the crest, and it deliberately leaves the spines dark &mdash; that contrast is what gives the silhouette its spikes back.</p>
+        <p class="vc-intent"><svg class="intent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.6 3.4a2.1 2.1 0 0 1 3 3L11 14l-3-3z"/><path d="M8 11l3 3-1.4 1.4a3 3 0 0 1-2.1.9H5l-.9 2.2a1 1 0 0 1-1.4-1.4L5 15.5v-2.4a3 3 0 0 1 .9-2.1z"/></svg><span>give the crest a yellow-green membrane, spines left dark.</span></p>
       </div>
       <div class="video-card">
         <video src="assets/video/fin2.mp4" poster="assets/video/fin2.jpg" muted loop playsinline preload="none"></video>
         <div class="vc-label">Fin membrane &middot; carrying it through</div>
-        <p class="vc-note">The camera drops to the large fin so the same reference can be judged at close range. The membrane is filled across its span while the ribs stay dark, so the fin reads as one surface rather than a patchwork.</p>
+        <p class="vc-intent"><svg class="intent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.6 3.4a2.1 2.1 0 0 1 3 3L11 14l-3-3z"/><path d="M8 11l3 3-1.4 1.4a3 3 0 0 1-2.1.9H5l-.9 2.2a1 1 0 0 1-1.4-1.4L5 15.5v-2.4a3 3 0 0 1 .9-2.1z"/></svg><span>same membrane across the big fin &mdash; but keep the ribs dark.</span></p>
       </div>
       <div class="video-card">
         <video src="assets/video/horn.mp4" poster="assets/video/horn.jpg" muted loop playsinline preload="none"></video>
         <div class="vc-label">Horn &middot; a separate object</div>
-        <p class="vc-note">The horn is then opened as its own object and given banded ivory, treated as a separate accent rather than an extension of the body.</p>
+        <p class="vc-intent"><svg class="intent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.6 3.4a2.1 2.1 0 0 1 3 3L11 14l-3-3z"/><path d="M8 11l3 3-1.4 1.4a3 3 0 0 1-2.1.9H5l-.9 2.2a1 1 0 0 1-1.4-1.4L5 15.5v-2.4a3 3 0 0 1 .9-2.1z"/></svg><span>the horn is its own object. banded ivory?</span></p>
       </div>
     </div>
 
@@ -186,32 +174,32 @@
       <div class="video-card">
         <video src="assets/video/bust_base.mp4" poster="assets/video/bust_base.jpg" muted loop playsinline preload="none"></video>
         <div class="vc-label">First pass &middot; the whole face</div>
-        <p class="vc-note">Nothing on the bust yet. The artist selects the face and snout in one go and generates from a single reference, settling the scale pattern and the green base before any local decision is made.</p>
+        <p class="vc-intent"><svg class="intent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.6 3.4a2.1 2.1 0 0 1 3 3L11 14l-3-3z"/><path d="M8 11l3 3-1.4 1.4a3 3 0 0 1-2.1.9H5l-.9 2.2a1 1 0 0 1-1.4-1.4L5 15.5v-2.4a3 3 0 0 1 .9-2.1z"/></svg><span>start broad: one reference across the whole face.</span></p>
       </div>
       <div class="video-card">
         <video src="assets/video/bust_eye.mp4" poster="assets/video/bust_eye.jpg" muted loop playsinline preload="none"></video>
         <div class="vc-label">The eye &middot; a deliberate exception</div>
-        <p class="vc-note">A tight selection ringing the eye gets its own reference. The socket is the one place the artist does not want the body&rsquo;s scale pattern, so it is filled separately rather than left to the surrounding fill.</p>
+        <p class="vc-intent"><svg class="intent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.6 3.4a2.1 2.1 0 0 1 3 3L11 14l-3-3z"/><path d="M8 11l3 3-1.4 1.4a3 3 0 0 1-2.1.9H5l-.9 2.2a1 1 0 0 1-1.4-1.4L5 15.5v-2.4a3 3 0 0 1 .9-2.1z"/></svg><span>not scales around the eye &mdash; the socket gets its own.</span></p>
       </div>
       <div class="video-card">
         <video src="assets/video/bust_spine.mp4" poster="assets/video/bust_spine.jpg" muted loop playsinline preload="none"></video>
         <div class="vc-label">Nape &middot; a dorsal ridge</div>
-        <p class="vc-note">The back of the neck takes a violet-and-orange reference the face never sees. Running a different material along the spine gives the bust a top-to-bottom read that one reference could not.</p>
+        <p class="vc-intent"><svg class="intent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.6 3.4a2.1 2.1 0 0 1 3 3L11 14l-3-3z"/><path d="M8 11l3 3-1.4 1.4a3 3 0 0 1-2.1.9H5l-.9 2.2a1 1 0 0 1-1.4-1.4L5 15.5v-2.4a3 3 0 0 1 .9-2.1z"/></svg><span>what if the spine ran violet and orange?</span></p>
       </div>
       <div class="video-card">
         <video src="assets/video/bust_side.mp4" poster="assets/video/bust_side.jpg" muted loop playsinline preload="none"></video>
         <div class="vc-label">Side of the neck &middot; the cool panel</div>
-        <p class="vc-note">A pale grey-green reference sets up the third band of colour. The artist is composing the head as panels &mdash; warm crown, violet spine, cool flank &mdash; each one a separate reference choice.</p>
+        <p class="vc-intent"><svg class="intent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.6 3.4a2.1 2.1 0 0 1 3 3L11 14l-3-3z"/><path d="M8 11l3 3-1.4 1.4a3 3 0 0 1-2.1.9H5l-.9 2.2a1 1 0 0 1-1.4-1.4L5 15.5v-2.4a3 3 0 0 1 .9-2.1z"/></svg><span>cool the side of the neck down a little.</span></p>
       </div>
       <div class="video-card">
         <video src="assets/video/bust_recolor.mp4" poster="assets/video/bust_recolor.jpg" muted loop playsinline preload="none"></video>
         <div class="vc-label">Recolouring &middot; warm over cool</div>
-        <p class="vc-note">The artist returns to the finished green head and refills the face and horns from a red-orange reference. The scale geometry is untouched; only the material read changes, so the decision stays reversible.</p>
+        <p class="vc-intent"><svg class="intent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.6 3.4a2.1 2.1 0 0 1 3 3L11 14l-3-3z"/><path d="M8 11l3 3-1.4 1.4a3 3 0 0 1-2.1.9H5l-.9 2.2a1 1 0 0 1-1.4-1.4L5 15.5v-2.4a3 3 0 0 1 .9-2.1z"/></svg><span>actually &mdash; let&rsquo;s go warm over all that cool.</span></p>
       </div>
       <div class="video-card">
         <video src="assets/video/edit_dragonbust.mp4" poster="assets/video/edit_dragonbust.jpg" muted loop playsinline preload="none"></video>
         <div class="vc-label">An earlier session &middot; overruling finished work</div>
-        <p class="vc-note">The same bust in an earlier build of the add-on, already carrying a full green-scale texture. The artist selects into it and refills with a red reference, using the fill as a revision tool rather than a first pass.</p>
+        <p class="vc-intent"><svg class="intent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.6 3.4a2.1 2.1 0 0 1 3 3L11 14l-3-3z"/><path d="M8 11l3 3-1.4 1.4a3 3 0 0 1-2.1.9H5l-.9 2.2a1 1 0 0 1-1.4-1.4L5 15.5v-2.4a3 3 0 0 1 .9-2.1z"/></svg><span>scrap the green. red across the cheek instead.</span></p>
       </div>
     </div>
 
@@ -221,21 +209,17 @@
       <div class="video-card">
         <video src="assets/video/blend_cabbage.mp4" poster="assets/video/blend_cabbage.jpg" muted loop playsinline preload="none"></video>
         <div class="vc-label">Cabbage &middot; two references, one head</div>
-        <p class="vc-note">A red-cabbage cross-section and a green outer leaf are loaded as two brushes on the same object. The artist alternates between them to author where the cut face ends and the leaf begins &mdash; a boundary that is a compositional choice, not a UV seam.</p>
       </div>
       <div class="video-card">
         <video src="assets/video/blend_croissant.mp4" poster="assets/video/blend_croissant.jpg" muted loop playsinline preload="none"></video>
         <div class="vc-label">Croissant &middot; reference as pure choice</div>
-        <p class="vc-note">Starting from an ordinary baked crust, the artist fills one band with a strawberry-glaze reference and another with sea and sky. Nothing in the tool holds an opinion about what a croissant should look like, so the reference is the whole of the artistic intent.</p>
       </div>
       <div class="video-card">
         <video src="assets/video/leaf_autumn.mp4" poster="assets/video/leaf_autumn.jpg" muted loop playsinline preload="none"></video>
         <div class="vc-label">Curled leaf &middot; a gradient authored by hand</div>
-        <p class="vc-note">Green at the tip, red through the body. The artist fills the leaf in regions rather than painting a ramp, deciding where the colour turns &mdash; and the fill follows the curl and the veins instead of cutting across them.</p>
       </div>
     </div>
 
-    <p class="caption">Clips play when scrolled into view. Sound is not used. The add-on carries its working title in these captures.</p>
 
   </div>
 </section>
@@ -248,19 +232,18 @@
       No textured 3D dataset is involved. Off-the-shelf image models generate training data from the shape itself,
       and the network learns local texturing from that shape's own self-similarity.
     </p>
-    <h3 class="sub-title"><span class="sub-num">3.1</span> Data</h3>
+    <h3 class="sub-title"><span class="sub-num">3.1</span> Data and Training</h3>
     <p class="section-lede">
-      Cameras are sampled around the mesh, ControlNet renders diverse single-view looks from its geometry, a
-      de-lighting network recovers albedo, and back-projection turns each view into a partial texture that
-      close-up local cameras sample for training patches.
+      We generate local patch level data pairs (geometry and texture) from ControlNet rendered single view
+      renderings from a single asset. We pass them through batch multi-attention layer for the model to learn
+      faithful texture inpainting.
     </p>
     <div class="plate"><img src="assets/img/fig_data_slide.png" alt="Data generation and training pipeline"></div>
 
     <h3 class="sub-title"><span class="sub-num">3.2</span> Model</h3>
     <p class="section-lede">
-      A latent diffusion backbone gains extra input channels for local normals, relative position and masked
-      albedo. The key change is <b>batch multi-attention</b>: every patch in a batch attends to every other, so
-      the model can borrow appearance from any reference patch that shares its local geometry.
+      Our model supports interactive and automatic texturing. The artist can select any reference and create a
+      &ldquo;brush&rdquo;. The model inferences faithful patches on the asset.
     </p>
     <div class="plate"><img src="assets/img/fig_model_slide.png" alt="Reference brush construction and inference"></div>
 
@@ -279,12 +262,12 @@
   <div class="wrap">
     <div class="section-head"><span class="section-num">04</span><h2 class="section-title">Versatile applications</h2></div>
     <p class="section-lede">
-      What a trained model can do once it exists for a shape: blend several references across one surface,
+      Once trained, our model supports versatile applications: blend several references across one surface,
       carry beyond base colour into full PBR channels, texture a shape it was never trained on, and fill a
       whole mesh from a single view.
     </p>
 
-    <h3 class="sub-title"><span class="sub-num">4.1</span> Blending</h3>
+    <h3 class="sub-title"><span class="sub-num">4.1</span> Blending with two or more references</h3>
     <div class="pbr-grid five">
       <div class="pbr-cell" data-swap="cabbage">
         <div class="pbr-stage">
@@ -521,15 +504,10 @@
     </div>
 
     <h3 class="sub-title"><span class="sub-num">4.4</span> Automatic texturing</h3>
-    <p class="section-lede">
-      Given one novel view, GLOSS textures the whole mesh by progressively inpainting patches. Measured against
-      four automatic baselines, each handed exactly the same conditioning image:
-    </p>
 
 
 
-    <h4 class="mini-title">One reference in, a whole mesh out</h4>
-    <p class="section-lede tight">Five fills of one shape, each driven by the single reference view inset in its corner. The first three shapes are category finetuned at 20k steps; the rest are per-shape models.</p>
+    <h4 class="mini-title">References in, textured out via globally synced progressive inpainting</h4>
     <div class="auto-swap" id="autoSwap">
       <div class="as-pick">
         <button type="button" data-i="0" class="on" data-ft="1">Cabbage</button>
@@ -647,7 +625,7 @@
       </div>
     </div>
 
-    <h4 class="mini-title">Every method on the same frame</h4>
+    <h4 class="mini-title">Comparison against baselines</h4>
     <div class="cmp" id="autoCmp">
       <div class="cmp-shape"><span class="cs-lab">shape</span>
         <button type="button" data-src="assets/video/app_auto_cmp_2.mp4" class="on">Cabbage</button>

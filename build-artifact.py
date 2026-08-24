@@ -13,7 +13,21 @@ The sandbox blocks every external request and caps the page at 16 MB, so this:
 
 Usage:  python3 build-artifact.py
 """
+import sys as _sys
+# The interpreter matters here: /usr/bin/python3 shadows anaconda on this PATH
+# and carries none of these. Without this check the import error is simply the
+# last thing that happens - the output file is never written and a stale one is
+# left behind looking like a fresh build.
+try:
+    import numpy, PIL, scipy          # noqa: F401
+except ImportError:
+    _sys.exit(__file__.split("/")[-1] + " needs numpy, PIL and scipy, and this "
+              "interpreter (" + _sys.executable + ") has none.\n"
+              "Run it with /Users/chenyuecai/opt/anaconda3/bin/python3.")
+
 import base64, json, os, re, shutil, subprocess, sys, tempfile
+
+
 
 SRC  = os.path.dirname(os.path.abspath(__file__))
 OUT  = os.path.join(SRC, "gloss-artifact.html")

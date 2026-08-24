@@ -320,3 +320,28 @@ window.__ga = window.__ga || function (u) { return u; };
   }, { rootMargin: '150px' }).observe(root);
 })();
 
+
+/* ---------- 10. TL;DR: sweep the strike across the old claims ---------------
+   The words are static — only the rule is animated, so the reader watches the
+   old idea being crossed out instead of watching text type itself.          */
+(function () {
+  const swaps = document.querySelector('.tldr-swaps');
+  if (!swaps) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    swaps.classList.add('struck');
+    return;
+  }
+  const PERIOD = 7000;
+  const strike = () => {
+    swaps.classList.remove('struck');
+    // let the reset paint before drawing again, or the browser coalesces both
+    requestAnimationFrame(() => requestAnimationFrame(() => swaps.classList.add('struck')));
+  };
+  let timer = null;
+  const start = () => { if (!timer) { strike(); timer = setInterval(strike, PERIOD); } };
+  const stop = () => { clearInterval(timer); timer = null; };
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(([e]) => (e.isIntersecting ? start() : stop()),
+      { threshold: 0.4 }).observe(swaps);
+  } else { start(); }
+})();

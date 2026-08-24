@@ -5,13 +5,28 @@ The slide is 20in wide and the artwork rarely fills it, so an uncropped export
 is mostly empty ground. Colour is already correct from the deck, so nothing is
 repainted here.
 """
+import sys as _sys
+# The interpreter matters here: /usr/bin/python3 shadows anaconda on this PATH
+# and carries none of these. Without this check the import error is simply the
+# last thing that happens - the output file is never written and a stale one is
+# left behind looking like a fresh build.
+try:
+    import numpy, PIL, scipy          # noqa: F401
+except ImportError:
+    _sys.exit(__file__.split("/")[-1] + " needs numpy, PIL and scipy, and this "
+              "interpreter (" + _sys.executable + ") has none.\n"
+              "Run it with /Users/chenyuecai/opt/anaconda3/bin/python3.")
+
 import numpy as np, os
+
+
 from PIL import Image
 from scipy import ndimage
 Image.MAX_IMAGE_PIXELS = None
 
 BG = np.array([13, 18, 14])
-DST = "/Users/chenyuecai/gloss-page/v2/assets/img"
+DST = os.environ.get("GLOSS_IMG_DST") or os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), "assets", "img")
 MAX_W = 3200        # ~2.9x the 1120px column: sharp on retina, sane file size
 
 INK = np.array([233, 238, 234])       # --ink
@@ -92,24 +107,16 @@ def crop_and_save(src, name):
     # grids on black, and treating that as content kept a large dead band.
     ink = (np.abs(a - BG).max(axis=2) > 14) & (a.max(axis=2) > 26)
 
-    # A single stray column or row - pdftoppm leaves a 1px grey page edge -
-    # is enough to stretch a min/max bbox back to the full slide. Require a row
-    # or column to carry a real share of ink before it counts as content.
-    # A density test alone cannot catch that edge: the line is full height, so
-    # its column is as dense as any real one. Eroding first drops every
-    # hairline and leaves real strokes standing, which also reclaims the dead
-    # band the edge leaves down the right-hand side.
+    # pdftoppm leaves a 1px grey page edge down the side of the render. It is
+    # one pixel wide but full height, so as "ink" it pins the box to the whole
+    # slide and the figure keeps a dead band under it. Eroding drops every
+    # hairline; dilating back and intersecting with the original ink returns
+    # the thin strokes that belong to real marks, which a density threshold
+    # would trim instead - it was cutting the tail off "pred z0".
     solid = ndimage.binary_erosion(ink, np.ones((3, 3)))
     if solid.any():
-        ink = solid
-    col = ink.mean(axis=0)
-    row = ink.mean(axis=1)
-    tc = max(col.max() * 0.02, 0.004)
-    tr = max(row.max() * 0.02, 0.004)
-    xs = np.where(col > tc)[0]
-    ys = np.where(row > tr)[0]
-    if not len(xs) or not len(ys):
-        xs = np.where(col > 0)[0]; ys = np.where(row > 0)[0]
+        ink = ink & ndimage.binary_dilation(solid, np.ones((3, 3)), iterations=6)
+    ys, xs = np.where(ink)
     pad = 26
     box = (max(xs.min()-pad, 0), max(ys.min()-pad, 0),
            min(xs.max()+pad, a.shape[1]-1), min(ys.max()+pad, a.shape[0]-1))
