@@ -1,0 +1,6 @@
+v2/
+*.py
+gloss-artifact.html
+img_white_backup/
+shots/
+__pycache__/

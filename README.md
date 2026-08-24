@@ -1,21 +1,16 @@
-# GLOSS project page
+# GLOSS — project page
 
-Project website for **GLOSS: Geometric Local Self-Similarity Learning for Faithful Reference-Guided Texture Fill**.
+Source for **[chenyuecai.github.io/gloss-page](https://chenyuecai.github.io/gloss-page/)**, the project
+page for *GLOSS: Geometric Local Self-Similarity Learning for Faithful Reference-Guided Texture Fill*
+(SIGGRAPH Asia 2026).
 
-Live site: https://chenyuecai.github.io/gloss-page/
+Code and checkpoints: **[ChenyueCai/GLOSS](https://github.com/ChenyueCai/GLOSS)**
 
-## Structure
+## Layout
 
-- `index.html` — the page (hero, abstract, teaser, video, BibTeX).
-- `style.css` — styling, adapted from the [UniMate](https://linzhanm.github.io/unimate/) / VideoMimic template.
-- `assets/` — teaser image, demo video, and poster frame.
+- `index.html` — the page
+- `style.css` — all styling
+- `app.js` — turntable swaps, section controls, title animation
+- `assets/` — video, figures and the paper PDF
 
-## Editing
-
-- **Authors:** edit the `.authors` / `.affil-note` block near the top of `index.html`.
-- **Links:** the arXiv and Code buttons are disabled placeholders — replace the `href` and drop
-  `class="disabled"` once the links are live.
-- **Video:** `assets/gloss-video.mp4` is a web-compressed (720p) version of the original. Replace it in place
-  to update.
-
-Local preview: `python3 -m http.server` then open http://localhost:8000.
+Served by GitHub Pages from `main` at `/`. `.nojekyll` keeps Jekyll from touching the asset paths.

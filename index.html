@@ -1,144 +1,706 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="title" content="GLOSS" />
-  <meta name="description"
-    content="GLOSS: Geometric Local Self-Similarity Learning for Faithful Reference-Guided Texture Fill." />
-  <meta property="og:title" content="GLOSS: Geometric Local Self-Similarity Learning for Faithful Reference-Guided Texture Fill" />
-  <meta property="og:description" content="A local, less data-hungry approach to reference-guided 3D texture fill." />
-  <meta property="og:image" content="assets/teaser.png" />
-  <meta property="og:type" content="website" />
-  <title>GLOSS: Geometric Local Self-Similarity Learning for Faithful Reference-Guided Texture Fill</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GLOSS: Geometric Local Self-Similarity Learning for Faithful Reference-Guided Texture Fill</title>
+<meta name="description" content="GLOSS learns a shape-specific local texture model from a single 3D shape and image priors, enabling reference-guided texture fill with strong geometry-texture consistency.">
+<meta property="og:title" content="GLOSS: Geometric Local Self-Similarity Learning for Faithful Reference-Guided Texture Fill">
+<meta property="og:description" content="Reference-guided 3D texture fill from a single shape. SIGGRAPH Asia 2026.">
+<meta property="og:image" content="assets/img/teaser.jpg">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-  <!-- Fixed table of contents. -->
-  <div class="toc">
-    <h3>Content</h3>
-    <hr />
-    <ul>
-      <li><a href="#teaser">Overview</a></li>
-      <li><a href="#abstract">Abstract</a></li>
-      <li><a href="#video">Video</a></li>
-      <li><a href="#bibtex">BibTeX</a></li>
-    </ul>
-  </div>
 
-  <div class="main-content">
-    <div class="venue-line"><span class="venue">SIGGRAPH Asia 2026</span></div>
-    <div class="hero-text">GLOSS</div>
-    <div class="sub-hero-text">Geometric Local Self-Similarity Learning for<br />Faithful Reference-Guided Texture Fill</div>
+<!-- ==================== 1 · TITLE ==================== -->
+<header class="hero">
+  <video class="hero-bg" src="assets/video/hero_seadragon.mp4" poster="assets/video/hero_seadragon.jpg"
+         muted loop playsinline autoplay preload="auto"></video>
+  <div class="hero-scrim"></div>
 
-    <!-- Superscripts key to .affil-note below. -->
-    <div class="authors">
-      <a href="https://chenyue-cai.com/" target="_blank" rel="noopener">Chenyue Cai</a><sup>1&#42;</sup>,
-      Anita Hu<sup>2</sup>,
-      James Lucas<sup>2</sup>,
-      <a href="https://www.cs.princeton.edu/~smr/" target="_blank" rel="noopener">Szymon Rusinkiewicz</a><sup>1</sup>,
-      Masha Shugrina<sup>2</sup>
-    </div>
-    <div class="affil-note"><sup>1</sup>Princeton University &nbsp;&nbsp; <sup>2</sup>NVIDIA Research</div>
-    <div class="affil-note"><sup>&#42;</sup>Work done during an internship at NVIDIA.</div>
-
-    <div class="affiliations">
-      <img class="logo-lg" src="assets/princeton.png" alt="Princeton University" />
-      <img src="assets/nvidia.svg" alt="NVIDIA Research" />
+  <div class="hero-inner wrap">
+    <div class="eyebrow">
+      <span class="venue">SIGGRAPH Asia 2026 &middot; Conference Papers</span>
+      <span class="eyebrow-right">Princeton University &middot; NVIDIA</span>
     </div>
 
-    <div class="quick-links">
-      <a class="disabled" href="#" aria-disabled="true">[arXiv]</a>
-      <a class="disabled" href="#" aria-disabled="true">[Code (coming soon)]</a>
-      <a href="#video">[Video]</a>
-    </div>
+    <!-- The five highlighted letters fly forward and assemble "GLOSS:" -->
+    <h1 class="hero-title" aria-label="GLOSS: Geometric Local Self-Similarity Learning faithful reference-guided texture fill from a single shape">
+      <span class="title-line" aria-hidden="true"><span class="gl-prefix"><i data-src="s0">G</i><i data-src="s1">L</i><i data-src="s2">O</i><i data-src="s3">S</i><i data-src="s4">S</i><i class="colon">:</i></span><span
+        class="gl-phrase"><span class="gl" id="s0">G</span>eometric <span class="gl" id="s1">L</span><span class="gl" id="s2">o</span>cal <span class="gl" id="s3">S</span>elf-<span class="gl" id="s4">S</span>imilarity</span></span>
+      <span class="title-tag" aria-hidden="true"> Learning faithful reference-guided texture fill from a single shape</span>
+    </h1>
 
-    <!-- Teaser figure. -->
-    <img id="teaser" class="teaser-figure" src="assets/teaser.png"
-      alt="GLOSS teaser: reference-guided texture fill results." />
-    <p class="figure-caption">
-      <b>GLOSS</b> learns a shape-specific local texture generation and completion model from image priors and a
-      single shape, guided by geometry-aware reference patches. It transfers any novel reference to the full target
-      texture through patchwise inpainting, and generalizes to PBR materials and unseen meshes.
+    <p class="authors">
+      <a class="au-o" href="https://chenyue-cai.com/" target="_blank" rel="noopener">Chenyue Cai</a><sup>1*</sup>,
+      <span class="au-g">Anita Hu</span><sup>2</sup>, <a class="au-g" href="https://www.cs.toronto.edu/~jlucas/" target="_blank" rel="noopener">James Lucas</a><sup>2</sup>,
+      <a class="au-o" href="https://www.cs.princeton.edu/~smr/" target="_blank" rel="noopener">Szymon Rusinkiewicz</a><sup>1</sup>,
+      <a class="au-g" href="https://shumash.com/" target="_blank" rel="noopener">Masha Shugrina</a><sup>2</sup>
+    </p>
+    <p class="affils">
+      <sup>1</sup> Princeton University &nbsp;&nbsp; <sup>2</sup> NVIDIA &nbsp;&nbsp;
+      <sup>*</sup> Work done during an internship at NVIDIA
     </p>
 
-    <div class="tagline" id="abstract">Abstract.</div>
-    <div class="section">
-      Using conditional image generators, texture artists can explore many single-view looks for an existing 3D
-      shape. Despite impressive progress, state-of-the-art generative methods still struggle to generate a full
-      object texture while closely adhering to fine scaled geometric detail and single-view references, and leave
-      little room for artist guidance. Furthermore, current automatic models lack the flexibility for artists to
-      explore multiple textures from varied sources in an interactive and controllable manner. Unlike methods trained
-      on large 3D datasets that generate full object textures from global guidance, our work explores a local and
-      less data-hungry approach to texture on a more specific class of texture. We leverage the geometric
-      self-similarity and geometry-texture correlation of natural and man-made shapes and train a shape-specific
-      local texture generation and completion model. This model learns from existing image model priors and a single
-      shape, and is guided by attending to a set of geometry-aware reference patches. The trained shape-specific
-      network can transfer any novel reference to the full target object texture through patchwise inpainting. We show
-      improved or comparable quality to strong image-conditioned texture generation baselines, suggesting local
-      texturing as a promising research direction. Our model also enables local geometry-conditioned texture
-      inpainting, guided by artist-selected references, and generalizes to PBR materials and unseen meshes for texture
-      transfer. We piloted our novel texture fill capability as a Blender addon with several 3D texturing
-      professionals who reported positive feedback on the model's controllability, practical usefulness, and creative
-      affordances.
+    <nav class="links">
+      <a class="btn primary" href="assets/paper/gloss.pdf" target="_blank" rel="noopener">arXiv</a>
+      <a class="btn" href="#demos">Video</a>
+      <a class="btn" href="https://github.com/ChenyueCai/GLOSS" target="_blank" rel="noopener">Code</a>
+      <span class="btn soon">Blender add-on</span>
+      <a class="btn" href="#bibtex">BibTeX</a>
+    </nav>
+
+    <p class="hero-credit">Sea dragon textured interactively with GLOSS in Blender.</p>
+  </div>
+</header>
+
+<!-- ==================== 2 · TL;DR ==================== -->
+<section class="section tldr-sec" id="tldr">
+  <div class="wrap">
+    <div class="section-head"><span class="section-num">00</span><h2 class="section-title">TL;DR</h2></div>
+
+    <p class="tldr-claim">
+      <b>Interactive texture creation</b> with high-fidelity adherence to both
+      <span class="hl-ref">artist-selected references</span> and <span class="hl-geo">local geometry</span>.
+    </p>
+
+    <div class="tldr-swaps">
+      <p class="swap"><s class="swap-out">automatic in &#8594; out pipeline</s><span class="swap-sep">&#8594;</span><span class="swap-in">artist-controlled fine control</span></p>
+      <p class="swap alt"><s class="swap-out">hallucinated texture</s><span class="swap-sep">&#8594;</span><span class="swap-in">faithful texture</span></p>
     </div>
-
-    <div class="tagline" id="video">Video.</div>
-    <div class="section">
-      <video id="teaser-video" src="assets/gloss-video.mp4" poster="assets/video-poster.jpg"
-        controls preload="metadata" playsinline></video>
-    </div>
-
-    <div class="bibtex-code" id="bibtex">
-      <div class="bibtex-title">BibTeX</div>
-      <pre><code>@article{cai2026gloss,
-  title   = {GLOSS: Geometric Local Self-Similarity Learning for
-             Faithful Reference-Guided Texture Fill},
-  author  = {Cai, Chenyue and Hu, Anita and Lucas, James and
-             Rusinkiewicz, Szymon and Shugrina, Masha},
-  journal = {ACM Transactions on Graphics (SIGGRAPH Asia)},
-  year    = {2026}
-}</code></pre>
-    </div>
-
-  </div> <!-- End of main-content -->
-
-  <div class="footer">
-    &copy; Princeton University &nbsp;|&nbsp; Webpage template adapted from
-    <a href="https://linzhanm.github.io/unimate/" target="_blank" rel="noopener">UniMate</a> /
-    <a href="https://github.com/videomimic-1/videomimic-1.github.io" target="_blank" rel="noopener">VideoMimic</a>.
   </div>
 
-  <!-- TOC scroll-spy: light up the rail beside the section currently in view. -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const links = [...document.querySelectorAll('.toc a')];
-      const sections = new Map();
-      links.forEach((a) => {
-        const el = document.getElementById(a.getAttribute('href').slice(1));
-        if (el) sections.set(el, a);
-      });
-      if (!sections.size) return;
+</section>
 
-      const visible = new Set();
-      const setActive = (a) => {
-        if (!a) return;
-        links.forEach((l) => l.classList.toggle('active', l === a));
-      };
+<!-- ==================== 3 · TEASER ==================== -->
+<div class="wrap teaser-flow">
+  <div class="plate"><img src="assets/img/teaser_flow.png"
+       alt="Left: one shape with its normal map and a library of reference patches. Middle and right: the same dragon textured two different ways from those references, with the reference and target patch rows on the right."></div>
+</div>
 
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((e) => e.isIntersecting ? visible.add(e.target) : visible.delete(e.target));
-        for (const [el, a] of sections) {
-          if (visible.has(el)) { setActive(a); return; }
-        }
-      }, { rootMargin: '0px 0px -78% 0px', threshold: 0 });
+<!-- ==================== 4 · ABSTRACT ==================== -->
+<section class="section" id="abstract">
+  <div class="wrap">
+    <div class="section-head"><span class="section-num">01</span><h2 class="section-title">Abstract</h2></div>
 
-      sections.forEach((_, el) => observer.observe(el));
-      setActive(sections.values().next().value);
-    });
-  </script>
+    <div class="abstract-body">
+      <p>Conditional image generators let texture artists explore many single-view looks for an existing 3D shape,
+      yet state-of-the-art methods still struggle to produce a full object texture that adheres to fine-scale
+      geometric detail and to the reference, leaving little room for artist guidance or for exploring multiple
+      textures interactively. Unlike methods trained on large 3D datasets that texture from global guidance, we take
+      a local, less data-hungry approach with explicit artist control.</p>
+
+      <p>We leverage the geometric self-similarity and geometry&ndash;texture correlation of natural and man-made
+      shapes to train a shape-specific local texture generation and completion model, learned from existing image
+      model priors and a single shape by attending to geometry-aware reference patches. The trained network
+      transfers any novel reference to the full object texture through patchwise inpainting, with quality improved
+      over or comparable to strong image-conditioned baselines. It also enables local geometry-conditioned
+      inpainting guided by artist-selected references, and generalizes preliminarily to PBR materials and unseen
+      meshes. Piloting the capability as a Blender add-on with several 3D texturing professionals drew positive
+      feedback on its controllability and practical usefulness.</p>
+    </div>
+
+    <!-- The three ideas the method rests on, as compact points. -->
+    <ul class="concepts">
+      <li class="concept">
+        <h3 class="concept-title">Geometry self-similarity</h3>
+        <p class="concept-body">Shapes repeat locally, so a region already seen constrains one that has not.</p>
+      </li>
+      <li class="concept">
+        <h3 class="concept-title">Local geometry&ndash;texture prior</h3>
+        <p class="concept-body">Conditioned on the surface underneath, so a reference lands aligned to it.</p>
+      </li>
+      <li class="concept">
+        <h3 class="concept-title">Shape-specific, small data</h3>
+        <p class="concept-body">One shape and an off-the-shelf image model &mdash; no textured 3D corpus.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ==================== 5 · INTERACTIVE DEMOS ==================== -->
+<section class="section" id="demos">
+  <div class="wrap">
+    <div class="section-head"><span class="section-num">02</span><h2 class="section-title">Interactive demos</h2></div>
+    <p class="section-lede">
+      A prototype Blender add-on brings reference-guided fill into a real texturing workflow. Five professional 3D
+      artists piloted it; all five said they would integrate interactive reference and geometry-guided fill into
+      their work.
+    </p>
+
+    <h3 class="sub-title"><span class="sub-num">2.1</span> Diverse reference-based authorship on a single creature</h3>
+
+    <div class="seg creature-pick" id="creaturePick" role="group" aria-label="Choose a creature">
+      <button type="button" data-creature="sea" aria-pressed="true">Sea creature</button>
+      <button type="button" data-creature="bust" aria-pressed="false">Dragon bust</button>
+    </div>
+
+    <div class="video-grid three-up" data-creature="sea">
+      <div class="video-card">
+        <video src="assets/video/head_red.mp4" poster="assets/video/head_red.jpg" muted loop playsinline preload="none"></video>
+        <div class="vc-label">Red reference &middot; the face marking</div>
+        <p class="vc-intent"><svg class="intent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.6 3.4a2.1 2.1 0 0 1 3 3L11 14l-3-3z"/><path d="M8 11l3 3-1.4 1.4a3 3 0 0 1-2.1.9H5l-.9 2.2a1 1 0 0 1-1.4-1.4L5 15.5v-2.4a3 3 0 0 1 .9-2.1z"/></svg><span>why don&rsquo;t we paint the dragon head red?</span></p>
+      </div>
+      <div class="video-card">
+        <video src="assets/video/head_green.mp4" poster="assets/video/head_green.jpg" muted loop playsinline preload="none"></video>
+        <div class="vc-label">Green reference &middot; carrying the neck up</div>
+        <p class="vc-intent"><svg class="intent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.6 3.4a2.1 2.1 0 0 1 3 3L11 14l-3-3z"/><path d="M8 11l3 3-1.4 1.4a3 3 0 0 1-2.1.9H5l-.9 2.2a1 1 0 0 1-1.4-1.4L5 15.5v-2.4a3 3 0 0 1 .9-2.1z"/></svg><span>how about green scales over the blue ones up top?</span></p>
+      </div>
+      <div class="video-card">
+        <video src="assets/video/head_blue.mp4" poster="assets/video/head_blue.jpg" muted loop playsinline preload="none"></video>
+        <div class="vc-label">Blue reference &middot; the crown</div>
+        <p class="vc-intent"><svg class="intent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.6 3.4a2.1 2.1 0 0 1 3 3L11 14l-3-3z"/><path d="M8 11l3 3-1.4 1.4a3 3 0 0 1-2.1.9H5l-.9 2.2a1 1 0 0 1-1.4-1.4L5 15.5v-2.4a3 3 0 0 1 .9-2.1z"/></svg><span>the skull wants something cold &mdash; iridescent blue-green.</span></p>
+      </div>
+      <div class="video-card">
+        <video src="assets/video/fin1.mp4" poster="assets/video/fin1.jpg" muted loop playsinline preload="none"></video>
+        <div class="vc-label">Crest fins &middot; the first accent</div>
+        <p class="vc-intent"><svg class="intent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.6 3.4a2.1 2.1 0 0 1 3 3L11 14l-3-3z"/><path d="M8 11l3 3-1.4 1.4a3 3 0 0 1-2.1.9H5l-.9 2.2a1 1 0 0 1-1.4-1.4L5 15.5v-2.4a3 3 0 0 1 .9-2.1z"/></svg><span>give the crest a yellow-green membrane, spines left dark.</span></p>
+      </div>
+      <div class="video-card">
+        <video src="assets/video/fin2.mp4" poster="assets/video/fin2.jpg" muted loop playsinline preload="none"></video>
+        <div class="vc-label">Fin membrane &middot; carrying it through</div>
+        <p class="vc-intent"><svg class="intent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.6 3.4a2.1 2.1 0 0 1 3 3L11 14l-3-3z"/><path d="M8 11l3 3-1.4 1.4a3 3 0 0 1-2.1.9H5l-.9 2.2a1 1 0 0 1-1.4-1.4L5 15.5v-2.4a3 3 0 0 1 .9-2.1z"/></svg><span>same membrane across the big fin &mdash; but keep the ribs dark.</span></p>
+      </div>
+      <div class="video-card">
+        <video src="assets/video/horn.mp4" poster="assets/video/horn.jpg" muted loop playsinline preload="none"></video>
+        <div class="vc-label">Horn &middot; a separate object</div>
+        <p class="vc-intent"><svg class="intent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.6 3.4a2.1 2.1 0 0 1 3 3L11 14l-3-3z"/><path d="M8 11l3 3-1.4 1.4a3 3 0 0 1-2.1.9H5l-.9 2.2a1 1 0 0 1-1.4-1.4L5 15.5v-2.4a3 3 0 0 1 .9-2.1z"/></svg><span>the horn is its own object. banded ivory?</span></p>
+      </div>
+    </div>
+
+    <div class="video-grid three-up" data-creature="bust" hidden>
+      <div class="video-card">
+        <video src="assets/video/bust_base.mp4" poster="assets/video/bust_base.jpg" muted loop playsinline preload="none"></video>
+        <div class="vc-label">First pass &middot; the whole face</div>
+        <p class="vc-intent"><svg class="intent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.6 3.4a2.1 2.1 0 0 1 3 3L11 14l-3-3z"/><path d="M8 11l3 3-1.4 1.4a3 3 0 0 1-2.1.9H5l-.9 2.2a1 1 0 0 1-1.4-1.4L5 15.5v-2.4a3 3 0 0 1 .9-2.1z"/></svg><span>start broad: one reference across the whole face.</span></p>
+      </div>
+      <div class="video-card">
+        <video src="assets/video/bust_eye.mp4" poster="assets/video/bust_eye.jpg" muted loop playsinline preload="none"></video>
+        <div class="vc-label">The eye &middot; a deliberate exception</div>
+        <p class="vc-intent"><svg class="intent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.6 3.4a2.1 2.1 0 0 1 3 3L11 14l-3-3z"/><path d="M8 11l3 3-1.4 1.4a3 3 0 0 1-2.1.9H5l-.9 2.2a1 1 0 0 1-1.4-1.4L5 15.5v-2.4a3 3 0 0 1 .9-2.1z"/></svg><span>not scales around the eye &mdash; the socket gets its own.</span></p>
+      </div>
+      <div class="video-card">
+        <video src="assets/video/bust_spine.mp4" poster="assets/video/bust_spine.jpg" muted loop playsinline preload="none"></video>
+        <div class="vc-label">Nape &middot; a dorsal ridge</div>
+        <p class="vc-intent"><svg class="intent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.6 3.4a2.1 2.1 0 0 1 3 3L11 14l-3-3z"/><path d="M8 11l3 3-1.4 1.4a3 3 0 0 1-2.1.9H5l-.9 2.2a1 1 0 0 1-1.4-1.4L5 15.5v-2.4a3 3 0 0 1 .9-2.1z"/></svg><span>what if the spine ran violet and orange?</span></p>
+      </div>
+      <div class="video-card">
+        <video src="assets/video/bust_side.mp4" poster="assets/video/bust_side.jpg" muted loop playsinline preload="none"></video>
+        <div class="vc-label">Side of the neck &middot; the cool panel</div>
+        <p class="vc-intent"><svg class="intent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.6 3.4a2.1 2.1 0 0 1 3 3L11 14l-3-3z"/><path d="M8 11l3 3-1.4 1.4a3 3 0 0 1-2.1.9H5l-.9 2.2a1 1 0 0 1-1.4-1.4L5 15.5v-2.4a3 3 0 0 1 .9-2.1z"/></svg><span>cool the side of the neck down a little.</span></p>
+      </div>
+      <div class="video-card">
+        <video src="assets/video/bust_recolor.mp4" poster="assets/video/bust_recolor.jpg" muted loop playsinline preload="none"></video>
+        <div class="vc-label">Recolouring &middot; warm over cool</div>
+        <p class="vc-intent"><svg class="intent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.6 3.4a2.1 2.1 0 0 1 3 3L11 14l-3-3z"/><path d="M8 11l3 3-1.4 1.4a3 3 0 0 1-2.1.9H5l-.9 2.2a1 1 0 0 1-1.4-1.4L5 15.5v-2.4a3 3 0 0 1 .9-2.1z"/></svg><span>actually &mdash; let&rsquo;s go warm over all that cool.</span></p>
+      </div>
+      <div class="video-card">
+        <video src="assets/video/edit_dragonbust.mp4" poster="assets/video/edit_dragonbust.jpg" muted loop playsinline preload="none"></video>
+        <div class="vc-label">An earlier session &middot; overruling finished work</div>
+        <p class="vc-intent"><svg class="intent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.6 3.4a2.1 2.1 0 0 1 3 3L11 14l-3-3z"/><path d="M8 11l3 3-1.4 1.4a3 3 0 0 1-2.1.9H5l-.9 2.2a1 1 0 0 1-1.4-1.4L5 15.5v-2.4a3 3 0 0 1 .9-2.1z"/></svg><span>scrap the green. red across the cheek instead.</span></p>
+      </div>
+    </div>
+
+    <h3 class="sub-title" style="margin-top:44px"><span class="sub-num">2.2</span> Blending and second thoughts</h3>
+
+    <div class="video-grid">
+      <div class="video-card">
+        <video src="assets/video/blend_cabbage.mp4" poster="assets/video/blend_cabbage.jpg" muted loop playsinline preload="none"></video>
+        <div class="vc-label">Cabbage &middot; two references, one head</div>
+        <p class="vc-intent"><svg class="intent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.6 3.4a2.1 2.1 0 0 1 3 3L11 14l-3-3z"/><path d="M8 11l3 3-1.4 1.4a3 3 0 0 1-2.1.9H5l-.9 2.2a1 1 0 0 1-1.4-1.4L5 15.5v-2.4a3 3 0 0 1 .9-2.1z"/></svg><span>two references on one head — where should they meet?</span></p>
+      </div>
+      <div class="video-card">
+        <video src="assets/video/blend_croissant.mp4" poster="assets/video/blend_croissant.jpg" muted loop playsinline preload="none"></video>
+        <div class="vc-label">Croissant &middot; reference as pure choice</div>
+        <p class="vc-intent"><svg class="intent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.6 3.4a2.1 2.1 0 0 1 3 3L11 14l-3-3z"/><path d="M8 11l3 3-1.4 1.4a3 3 0 0 1-2.1.9H5l-.9 2.2a1 1 0 0 1-1.4-1.4L5 15.5v-2.4a3 3 0 0 1 .9-2.1z"/></svg><span>same shape, totally different mood. which reads better?</span></p>
+      </div>
+      <div class="video-card">
+        <video src="assets/video/leaf_autumn.mp4" poster="assets/video/leaf_autumn.jpg" muted loop playsinline preload="none"></video>
+        <div class="vc-label">Curled leaf &middot; a gradient authored by hand</div>
+        <p class="vc-intent"><svg class="intent-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.6 3.4a2.1 2.1 0 0 1 3 3L11 14l-3-3z"/><path d="M8 11l3 3-1.4 1.4a3 3 0 0 1-2.1.9H5l-.9 2.2a1 1 0 0 1-1.4-1.4L5 15.5v-2.4a3 3 0 0 1 .9-2.1z"/></svg><span>let&rsquo;s hand-author the gradient down the leaf.</span></p>
+      </div>
+    </div>
+
+
+  </div>
+</section>
+
+<!-- ==================== 6 · METHOD ==================== -->
+<section class="section" id="method">
+  <div class="wrap">
+    <div class="section-head"><span class="section-num">03</span><h2 class="section-title">Method</h2></div>
+    <p class="section-lede">
+      No textured 3D dataset is involved. Off-the-shelf image models generate training data from the shape itself,
+      and the network learns local texturing from that shape's own self-similarity.
+    </p>
+    <h3 class="sub-title"><span class="sub-num">3.1</span> Data and Training</h3>
+    <p class="section-lede">
+      We generate local patch level data pairs (geometry and texture) from ControlNet rendered single view
+      renderings from a single asset. We pass them through batch multi-attention layer for the model to learn
+      faithful texture inpainting.
+    </p>
+    <div class="plate"><img src="assets/img/fig_data_slide.png" alt="Data generation and training pipeline"></div>
+
+    <h3 class="sub-title"><span class="sub-num">3.2</span> Model</h3>
+    <p class="section-lede">
+      Our model supports interactive and automatic texturing. The artist can select any reference and create a
+      &ldquo;brush&rdquo;. The model inferences faithful patches on the asset.
+    </p>
+    <div class="plate"><img src="assets/img/fig_model_slide.png" alt="Reference brush construction and inference"></div>
+
+    <h3 class="sub-title"><span class="sub-num">3.2.1</span> Batch multi-attention visualization</h3>
+    <p class="section-lede">
+      Given a target patch, the trained attention layers look at reference patches and learn to synthesize
+      based on geometric similarity.
+    </p>
+    <div class="plate"><img src="assets/img/fig_attention_slide.png" alt="Batch multi-attention visualisation: albedo, normals and the attention output for a target patch across reference patches"></div>
+    <p class="caption">Rows: albedo, normals, and where attention lands for the target patch.</p>
+  </div>
+</section>
+
+<!-- ==================== 7 · VERSATILE APPLICATIONS ==================== -->
+<section class="section" id="applications">
+  <div class="wrap">
+    <div class="section-head"><span class="section-num">04</span><h2 class="section-title">Versatile applications</h2></div>
+    <p class="section-lede">
+      Once trained, our model supports versatile applications: blend several references across one surface,
+      carry beyond base colour into full PBR channels, texture a shape it was never trained on, and fill a
+      whole mesh from a single view.
+    </p>
+
+    <h3 class="sub-title"><span class="sub-num">4.1</span> Blending with two or more references</h3>
+    <div class="pbr-grid five">
+      <div class="pbr-cell" data-swap="cabbage">
+        <div class="pbr-stage">
+          <video data-i="0" class="on" src="assets/video/app_blend_1.mp4" poster="assets/video/app_blend_1.jpg" muted loop playsinline preload="none"></video>
+          <video data-i="1" src="assets/video/app_blend_2.mp4" poster="assets/video/app_blend_2.jpg" muted loop playsinline preload="none"></video>
+          <button type="button" class="pbr-arrow prev" data-step="-1" aria-label="Previous cabbage">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 L8 12 L15 19"/></svg></button>
+          <button type="button" class="pbr-arrow next" data-step="1" aria-label="Next cabbage">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5 L16 12 L9 19"/></svg></button>
+        </div>
+        <div class="pbr-refs orbs on" data-i="0">
+          <span class="orb"><img src="assets/img/refs/app_blend_1_r1.webp" alt="blended reference" loading="lazy"></span>
+          <span class="orb"><img src="assets/img/refs/app_blend_1_r2.webp" alt="blended reference" loading="lazy"></span>
+        </div>
+        <div class="pbr-refs orbs" data-i="1">
+          <span class="orb"><img src="assets/img/refs/app_blend_2_r1.webp" alt="blended reference" loading="lazy"></span>
+          <span class="orb"><img src="assets/img/refs/app_blend_2_r2.webp" alt="blended reference" loading="lazy"></span>
+        </div>
+        <div class="pbr-dots" aria-hidden="true"><i class="on"></i><i></i></div>
+      </div>
+      <div class="pbr-cell" data-swap="croissant">
+        <div class="pbr-stage">
+          <video data-i="0" class="on" src="assets/video/app_blend_3.mp4" poster="assets/video/app_blend_3.jpg" muted loop playsinline preload="none"></video>
+          <video data-i="1" src="assets/video/app_blend_4.mp4" poster="assets/video/app_blend_4.jpg" muted loop playsinline preload="none"></video>
+          <button type="button" class="pbr-arrow prev" data-step="-1" aria-label="Previous croissant">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 L8 12 L15 19"/></svg></button>
+          <button type="button" class="pbr-arrow next" data-step="1" aria-label="Next croissant">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5 L16 12 L9 19"/></svg></button>
+        </div>
+        <div class="pbr-refs orbs on" data-i="0">
+          <span class="orb"><img src="assets/img/refs/app_blend_3_r1.webp" alt="blended reference" loading="lazy"></span>
+          <span class="orb"><img src="assets/img/refs/app_blend_3_r2.webp" alt="blended reference" loading="lazy"></span>
+          <span class="orb"><img src="assets/img/refs/app_blend_3_r3.webp" alt="blended reference" loading="lazy"></span>
+        </div>
+        <div class="pbr-refs orbs" data-i="1">
+          <span class="orb"><img src="assets/img/refs/app_blend_4_r1.webp" alt="blended reference" loading="lazy"></span>
+          <span class="orb"><img src="assets/img/refs/app_blend_4_r2.webp" alt="blended reference" loading="lazy"></span>
+        </div>
+        <div class="pbr-dots" aria-hidden="true"><i class="on"></i><i></i></div>
+      </div>
+      <div class="pbr-cell" data-swap="sea turtle">
+        <div class="pbr-stage">
+          <video data-i="0" class="on" src="assets/video/app_blend_5.mp4" poster="assets/video/app_blend_5.jpg" muted loop playsinline preload="none"></video>
+          <video data-i="1" src="assets/video/app_blend_6.mp4" poster="assets/video/app_blend_6.jpg" muted loop playsinline preload="none"></video>
+          <button type="button" class="pbr-arrow prev" data-step="-1" aria-label="Previous sea turtle">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 L8 12 L15 19"/></svg></button>
+          <button type="button" class="pbr-arrow next" data-step="1" aria-label="Next sea turtle">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5 L16 12 L9 19"/></svg></button>
+        </div>
+        <div class="pbr-refs orbs on" data-i="0">
+          <span class="orb"><img src="assets/img/refs/app_blend_5_r1.webp" alt="blended reference" loading="lazy"></span>
+          <span class="orb"><img src="assets/img/refs/app_blend_5_r2.webp" alt="blended reference" loading="lazy"></span>
+          <span class="orb"><img src="assets/img/refs/app_blend_5_r3.webp" alt="blended reference" loading="lazy"></span>
+        </div>
+        <div class="pbr-refs orbs" data-i="1">
+          <span class="orb"><img src="assets/img/refs/app_blend_6_r1.webp" alt="blended reference" loading="lazy"></span>
+          <span class="orb"><img src="assets/img/refs/app_blend_6_r2.webp" alt="blended reference" loading="lazy"></span>
+        </div>
+        <div class="pbr-dots" aria-hidden="true"><i class="on"></i><i></i></div>
+      </div>
+      <div class="pbr-cell" data-swap="sea urchin">
+        <div class="pbr-stage">
+          <video data-i="0" class="on" src="assets/video/app_blend_7.mp4" poster="assets/video/app_blend_7.jpg" muted loop playsinline preload="none"></video>
+        </div>
+        <div class="pbr-refs orbs on" data-i="0">
+          <span class="orb"><img src="assets/img/refs/app_blend_7_r1.webp" alt="blended reference" loading="lazy"></span>
+          <span class="orb"><img src="assets/img/refs/app_blend_7_r2.webp" alt="blended reference" loading="lazy"></span>
+        </div>
+        <div class="pbr-dots" aria-hidden="true"><i class="on"></i></div>
+      </div>
+      <div class="pbr-cell" data-swap="koi">
+        <div class="pbr-stage">
+          <video data-i="0" class="on" src="assets/video/app_blend_8.mp4" poster="assets/video/app_blend_8.jpg" muted loop playsinline preload="none"></video>
+        </div>
+        <div class="pbr-refs orbs on" data-i="0">
+          <span class="orb"><img src="assets/img/refs/app_blend_8_r1.webp" alt="blended reference" loading="lazy"></span>
+          <span class="orb"><img src="assets/img/refs/app_blend_8_r2.webp" alt="blended reference" loading="lazy"></span>
+        </div>
+        <div class="pbr-dots" aria-hidden="true"><i class="on"></i></div>
+      </div>
+    </div>
+
+    <h3 class="sub-title"><span class="sub-num">4.2</span> Zero-shot PBR</h3>
+    <div class="pbr-split">
+      <div class="pbr-grid three">
+      <div class="pbr-cell" data-swap="cabbage">
+        <div class="pbr-stage">
+          <video data-i="0" class="on" src="assets/video/app_pbr_cabbage_1.mp4" poster="assets/video/app_pbr_cabbage_1.jpg" muted loop playsinline preload="none"></video>
+          <video data-i="1" src="assets/video/app_pbr_cabbage_2.mp4" poster="assets/video/app_pbr_cabbage_2.jpg" muted loop playsinline preload="none"></video>
+          <video data-i="2" src="assets/video/app_pbr_cabbage_3.mp4" poster="assets/video/app_pbr_cabbage_3.jpg" muted loop playsinline preload="none"></video>
+          <button type="button" class="pbr-arrow prev" data-step="-1" aria-label="Previous cabbage">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 L8 12 L15 19"/></svg></button>
+          <button type="button" class="pbr-arrow next" data-step="1" aria-label="Next cabbage">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5 L16 12 L9 19"/></svg></button>
+        </div>
+        <div class="pbr-refs on" data-i="0">
+          <span class="ref-chan"><span class="ref-thumb"><img src="assets/img/refs/app_pbr_cabbage_1_r1.webp" alt="metallic reference" loading="lazy"></span><span>metallic</span></span>
+          <span class="ref-chan"><span class="ref-thumb"><img src="assets/img/refs/app_pbr_cabbage_1_r2.webp" alt="roughness reference" loading="lazy"></span><span>roughness</span></span>
+          <span class="ref-chan"><span class="ref-thumb"><img src="assets/img/refs/app_pbr_cabbage_1_r3.webp" alt="albedo reference" loading="lazy"></span><span>albedo</span></span>
+        </div>
+        <div class="pbr-refs" data-i="1">
+          <span class="ref-chan"><span class="ref-thumb"><img src="assets/img/refs/app_pbr_cabbage_2_r1.webp" alt="metallic reference" loading="lazy"></span><span>metallic</span></span>
+          <span class="ref-chan"><span class="ref-thumb"><img src="assets/img/refs/app_pbr_cabbage_2_r2.webp" alt="roughness reference" loading="lazy"></span><span>roughness</span></span>
+          <span class="ref-chan"><span class="ref-thumb"><img src="assets/img/refs/app_pbr_cabbage_2_r3.webp" alt="albedo reference" loading="lazy"></span><span>albedo</span></span>
+        </div>
+        <div class="pbr-refs" data-i="2">
+          <span class="ref-chan"><span class="ref-thumb"><img src="assets/img/refs/app_pbr_cabbage_3_r1.webp" alt="metallic reference" loading="lazy"></span><span>metallic</span></span>
+          <span class="ref-chan"><span class="ref-thumb"><img src="assets/img/refs/app_pbr_cabbage_3_r2.webp" alt="roughness reference" loading="lazy"></span><span>roughness</span></span>
+          <span class="ref-chan"><span class="ref-thumb"><img src="assets/img/refs/app_pbr_cabbage_3_r3.webp" alt="albedo reference" loading="lazy"></span><span>albedo</span></span>
+        </div>
+        <div class="pbr-dots" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
+      </div>
+      <div class="pbr-cell" data-swap="croissant">
+        <div class="pbr-stage">
+          <video data-i="0" class="on" src="assets/video/app_pbr_croissant_1.mp4" poster="assets/video/app_pbr_croissant_1.jpg" muted loop playsinline preload="none"></video>
+          <video data-i="1" src="assets/video/app_pbr_croissant_2.mp4" poster="assets/video/app_pbr_croissant_2.jpg" muted loop playsinline preload="none"></video>
+          <button type="button" class="pbr-arrow prev" data-step="-1" aria-label="Previous croissant">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 L8 12 L15 19"/></svg></button>
+          <button type="button" class="pbr-arrow next" data-step="1" aria-label="Next croissant">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5 L16 12 L9 19"/></svg></button>
+        </div>
+        <div class="pbr-refs on" data-i="0">
+          <span class="ref-chan"><span class="ref-thumb"><img src="assets/img/refs/app_pbr_croissant_1_r1.webp" alt="metallic reference" loading="lazy"></span><span>metallic</span></span>
+          <span class="ref-chan"><span class="ref-thumb"><img src="assets/img/refs/app_pbr_croissant_1_r2.webp" alt="roughness reference" loading="lazy"></span><span>roughness</span></span>
+          <span class="ref-chan"><span class="ref-thumb"><img src="assets/img/refs/app_pbr_croissant_1_r3.webp" alt="albedo reference" loading="lazy"></span><span>albedo</span></span>
+        </div>
+        <div class="pbr-refs" data-i="1">
+          <span class="ref-chan"><span class="ref-thumb"><img src="assets/img/refs/app_pbr_croissant_2_r1.webp" alt="metallic reference" loading="lazy"></span><span>metallic</span></span>
+          <span class="ref-chan"><span class="ref-thumb"><img src="assets/img/refs/app_pbr_croissant_2_r2.webp" alt="roughness reference" loading="lazy"></span><span>roughness</span></span>
+          <span class="ref-chan"><span class="ref-thumb"><img src="assets/img/refs/app_pbr_croissant_2_r3.webp" alt="albedo reference" loading="lazy"></span><span>albedo</span></span>
+        </div>
+        <div class="pbr-dots" aria-hidden="true"><i class="on"></i><i></i></div>
+      </div>
+      <div class="pbr-cell" data-swap="urchin">
+        <div class="pbr-stage">
+          <video data-i="0" class="on" src="assets/video/app_pbr_urchin_1.mp4" poster="assets/video/app_pbr_urchin_1.jpg" muted loop playsinline preload="none"></video>
+          <video data-i="1" src="assets/video/app_pbr_urchin_2.mp4" poster="assets/video/app_pbr_urchin_2.jpg" muted loop playsinline preload="none"></video>
+          <button type="button" class="pbr-arrow prev" data-step="-1" aria-label="Previous urchin">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 L8 12 L15 19"/></svg></button>
+          <button type="button" class="pbr-arrow next" data-step="1" aria-label="Next urchin">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5 L16 12 L9 19"/></svg></button>
+        </div>
+        <div class="pbr-refs on" data-i="0">
+          <span class="ref-chan"><span class="ref-thumb"><img src="assets/img/refs/app_pbr_urchin_1_r1.webp" alt="metallic reference" loading="lazy"></span><span>metallic</span></span>
+          <span class="ref-chan"><span class="ref-thumb"><img src="assets/img/refs/app_pbr_urchin_1_r2.webp" alt="roughness reference" loading="lazy"></span><span>roughness</span></span>
+          <span class="ref-chan"><span class="ref-thumb"><img src="assets/img/refs/app_pbr_urchin_1_r3.webp" alt="albedo reference" loading="lazy"></span><span>albedo</span></span>
+        </div>
+        <div class="pbr-refs" data-i="1">
+          <span class="ref-chan"><span class="ref-thumb"><img src="assets/img/refs/app_pbr_urchin_2_r1.webp" alt="metallic reference" loading="lazy"></span><span>metallic</span></span>
+          <span class="ref-chan"><span class="ref-thumb"><img src="assets/img/refs/app_pbr_urchin_2_r2.webp" alt="roughness reference" loading="lazy"></span><span>roughness</span></span>
+          <span class="ref-chan"><span class="ref-thumb"><img src="assets/img/refs/app_pbr_urchin_2_r3.webp" alt="albedo reference" loading="lazy"></span><span>albedo</span></span>
+        </div>
+        <div class="pbr-dots" aria-hidden="true"><i class="on"></i><i></i></div>
+      </div>
+      </div>
+      <div class="pbr-grid three tri-side">
+        <div class="pbr-cell tri">
+          <div class="pbr-stage">
+            <video class="on" src="assets/video/app_pbr_tri_ref.mp4" poster="assets/video/app_pbr_tri_ref.jpg" muted loop playsinline preload="none"></video>
+          </div>
+          <div class="tri-lab">Reference material</div>
+        </div>
+        <div class="pbr-cell tri">
+          <div class="pbr-stage">
+            <video class="on" src="assets/video/app_pbr_tri_naive.mp4" poster="assets/video/app_pbr_tri_naive.jpg" muted loop playsinline preload="none"></video>
+          </div>
+          <div class="tri-lab">Na&iuml;ve application</div>
+        </div>
+        <div class="pbr-cell tri">
+          <div class="pbr-stage">
+            <video class="on" src="assets/video/app_pbr_tri_gloss.mp4" poster="assets/video/app_pbr_tri_gloss.jpg" muted loop playsinline preload="none"></video>
+          </div>
+          <div class="tri-lab">Painted with GLOSS</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="sub-title"><span class="sub-num">4.3</span> Zero-shot transfer to unseen mesh</h3>
+    <div class="pbr-grid six">
+      <div class="pbr-cell">
+        <div class="pbr-stage">
+          <video class="on" src="assets/video/app_xfer_1.mp4" poster="assets/video/app_xfer_1.jpg" muted loop playsinline preload="none"></video>
+        </div>
+        <div class="pbr-refs patch on">
+          <span class="xc-patch"><img src="assets/img/refs/app_xfer_1_patch.webp" alt="reference brush patch" loading="lazy"></span>
+        </div>
+        <div class="swap-chip"><span class="chip chip-from">croissant</span><span class="chip-arrow" aria-hidden="true">&rarr;</span><span class="chip chip-to">bread</span></div>
+      </div>
+      <div class="pbr-cell">
+        <div class="pbr-stage">
+          <video class="on" src="assets/video/app_xfer_2.mp4" poster="assets/video/app_xfer_2.jpg" muted loop playsinline preload="none"></video>
+        </div>
+        <div class="pbr-refs patch on">
+          <span class="xc-patch"><img src="assets/img/refs/app_xfer_2_patch.webp" alt="reference brush patch" loading="lazy"></span>
+        </div>
+        <div class="swap-chip"><span class="chip chip-from">croissant</span><span class="chip-arrow" aria-hidden="true">&rarr;</span><span class="chip chip-to">bread</span></div>
+      </div>
+      <div class="pbr-cell">
+        <div class="pbr-stage">
+          <video class="on" src="assets/video/app_xfer_4.mp4" poster="assets/video/app_xfer_4.jpg" muted loop playsinline preload="none"></video>
+        </div>
+        <div class="pbr-refs patch on">
+          <span class="xc-patch"><img src="assets/img/refs/app_xfer_4_patch.webp" alt="reference brush patch" loading="lazy"></span>
+        </div>
+        <div class="swap-chip"><span class="chip chip-from">sea turtle</span><span class="chip-arrow" aria-hidden="true">&rarr;</span><span class="chip chip-to">tortoise</span></div>
+      </div>
+      <div class="pbr-cell">
+        <div class="pbr-stage">
+          <video class="on" src="assets/video/app_xfer_5.mp4" poster="assets/video/app_xfer_5.jpg" muted loop playsinline preload="none"></video>
+        </div>
+        <div class="pbr-refs patch on">
+          <span class="xc-patch"><img src="assets/img/refs/app_xfer_5_patch.webp" alt="reference brush patch" loading="lazy"></span>
+        </div>
+        <div class="swap-chip"><span class="chip chip-from">sea turtle</span><span class="chip-arrow" aria-hidden="true">&rarr;</span><span class="chip chip-to">tortoise</span></div>
+      </div>
+      <div class="pbr-cell">
+        <div class="pbr-stage">
+          <video class="on" src="assets/video/app_xfer_6.mp4" poster="assets/video/app_xfer_6.jpg" muted loop playsinline preload="none"></video>
+        </div>
+        <div class="pbr-refs patch on">
+          <span class="xc-patch"><img src="assets/img/refs/app_xfer_6_patch.webp" alt="reference brush patch" loading="lazy"></span>
+        </div>
+        <div class="swap-chip"><span class="chip chip-from">urchin shell</span><span class="chip-arrow" aria-hidden="true">&rarr;</span><span class="chip chip-to">conch</span></div>
+      </div>
+      <div class="pbr-cell">
+        <div class="pbr-stage">
+          <video class="on" src="assets/video/app_xfer_7.mp4" poster="assets/video/app_xfer_7.jpg" muted loop playsinline preload="none"></video>
+        </div>
+        <div class="pbr-refs patch on">
+          <span class="xc-patch"><img src="assets/img/refs/app_xfer_7_patch.webp" alt="reference brush patch" loading="lazy"></span>
+        </div>
+        <div class="swap-chip"><span class="chip chip-from">urchin shell</span><span class="chip-arrow" aria-hidden="true">&rarr;</span><span class="chip chip-to">conch</span></div>
+      </div>
+    </div>
+
+    <h3 class="sub-title"><span class="sub-num">4.4</span> Automatic texturing</h3>
+
+
+
+    <h4 class="mini-title">References in, textured out via globally synced progressive inpainting</h4>
+    <div class="auto-swap" id="autoSwap">
+      <div class="as-pick">
+        <button type="button" data-i="0" class="on" data-ft="1">Cabbage</button>
+        <button type="button" data-i="1" data-ft="1">Rock and fish</button>
+        <button type="button" data-i="2" data-ft="1">Tortoise</button>
+        <button type="button" data-i="3">Sea urchin</button>
+        <button type="button" data-i="4">Sea turtle</button>
+        <button type="button" data-i="5">Croissant</button>
+        <button type="button" data-i="6">Cabbage</button>
+      </div>
+      <div class="as-slide on" data-i="0">
+        <div class="ft-strip"><video src="assets/video/app_auto_ft_1.mp4" poster="assets/video/app_auto_ft_1.jpg" muted loop playsinline preload="none"></video></div>
+      </div>
+      <div class="as-slide" data-i="1">
+        <div class="ft-strip"><video src="assets/video/app_auto_ft_2.mp4" poster="assets/video/app_auto_ft_2.jpg" muted loop playsinline preload="none"></video></div>
+      </div>
+      <div class="as-slide" data-i="2">
+        <div class="ft-strip"><video src="assets/video/app_auto_ft_3.mp4" poster="assets/video/app_auto_ft_3.jpg" muted loop playsinline preload="none"></video></div>
+      </div>
+      <div class="as-slide" data-i="3">
+        <div class="as-row">
+          <div class="auto-cell">
+            <video src="assets/video/app_auto_show_1.mp4" poster="assets/video/app_auto_show_1.jpg" muted loop playsinline preload="none"></video>
+            <span class="ac-ref"><img src="assets/img/refs/app_auto_show_1_r1.webp" alt="conditioning reference view" loading="lazy"></span>
+          </div>
+          <div class="auto-cell">
+            <video src="assets/video/app_auto_show_2.mp4" poster="assets/video/app_auto_show_2.jpg" muted loop playsinline preload="none"></video>
+            <span class="ac-ref"><img src="assets/img/refs/app_auto_show_2_r1.webp" alt="conditioning reference view" loading="lazy"></span>
+          </div>
+          <div class="auto-cell">
+            <video src="assets/video/app_auto_show_3.mp4" poster="assets/video/app_auto_show_3.jpg" muted loop playsinline preload="none"></video>
+            <span class="ac-ref"><img src="assets/img/refs/app_auto_show_3_r1.webp" alt="conditioning reference view" loading="lazy"></span>
+          </div>
+          <div class="auto-cell">
+            <video src="assets/video/app_auto_show_4.mp4" poster="assets/video/app_auto_show_4.jpg" muted loop playsinline preload="none"></video>
+            <span class="ac-ref"><img src="assets/img/refs/app_auto_show_4_r1.webp" alt="conditioning reference view" loading="lazy"></span>
+          </div>
+          <div class="auto-cell">
+            <video src="assets/video/app_auto_show_5.mp4" poster="assets/video/app_auto_show_5.jpg" muted loop playsinline preload="none"></video>
+            <span class="ac-ref"><img src="assets/img/refs/app_auto_show_5_r1.webp" alt="conditioning reference view" loading="lazy"></span>
+          </div>
+        </div>
+      </div>
+      <div class="as-slide" data-i="4">
+        <div class="as-row">
+          <div class="auto-cell">
+            <video src="assets/video/app_auto_show_25.mp4" poster="assets/video/app_auto_show_25.jpg" muted loop playsinline preload="none"></video>
+            <span class="ac-ref"><img src="assets/img/refs/app_auto_show_25_r1.webp" alt="conditioning reference view" loading="lazy"></span>
+          </div>
+          <div class="auto-cell">
+            <video src="assets/video/app_auto_show_26.mp4" poster="assets/video/app_auto_show_26.jpg" muted loop playsinline preload="none"></video>
+            <span class="ac-ref"><img src="assets/img/refs/app_auto_show_26_r1.webp" alt="conditioning reference view" loading="lazy"></span>
+          </div>
+          <div class="auto-cell">
+            <video src="assets/video/app_auto_show_27.mp4" poster="assets/video/app_auto_show_27.jpg" muted loop playsinline preload="none"></video>
+            <span class="ac-ref"><img src="assets/img/refs/app_auto_show_27_r1.webp" alt="conditioning reference view" loading="lazy"></span>
+          </div>
+          <div class="auto-cell">
+            <video src="assets/video/app_auto_show_28.mp4" poster="assets/video/app_auto_show_28.jpg" muted loop playsinline preload="none"></video>
+            <span class="ac-ref"><img src="assets/img/refs/app_auto_show_28_r1.webp" alt="conditioning reference view" loading="lazy"></span>
+          </div>
+          <div class="auto-cell">
+            <video src="assets/video/app_auto_show_29.mp4" poster="assets/video/app_auto_show_29.jpg" muted loop playsinline preload="none"></video>
+            <span class="ac-ref"><img src="assets/img/refs/app_auto_show_29_r1.webp" alt="conditioning reference view" loading="lazy"></span>
+          </div>
+        </div>
+      </div>
+      <div class="as-slide" data-i="5">
+        <div class="as-row">
+          <div class="auto-cell">
+            <video src="assets/video/app_auto_show_9.mp4" poster="assets/video/app_auto_show_9.jpg" muted loop playsinline preload="none"></video>
+            <span class="ac-ref"><img src="assets/img/refs/app_auto_show_9_r1.webp" alt="conditioning reference view" loading="lazy"></span>
+          </div>
+          <div class="auto-cell">
+            <video src="assets/video/app_auto_show_10.mp4" poster="assets/video/app_auto_show_10.jpg" muted loop playsinline preload="none"></video>
+            <span class="ac-ref"><img src="assets/img/refs/app_auto_show_10_r1.webp" alt="conditioning reference view" loading="lazy"></span>
+          </div>
+          <div class="auto-cell">
+            <video src="assets/video/app_auto_show_11.mp4" poster="assets/video/app_auto_show_11.jpg" muted loop playsinline preload="none"></video>
+            <span class="ac-ref"><img src="assets/img/refs/app_auto_show_11_r1.webp" alt="conditioning reference view" loading="lazy"></span>
+          </div>
+          <div class="auto-cell">
+            <video src="assets/video/app_auto_show_12.mp4" poster="assets/video/app_auto_show_12.jpg" muted loop playsinline preload="none"></video>
+            <span class="ac-ref"><img src="assets/img/refs/app_auto_show_12_r1.webp" alt="conditioning reference view" loading="lazy"></span>
+          </div>
+          <div class="auto-cell">
+            <video src="assets/video/app_auto_show_13.mp4" poster="assets/video/app_auto_show_13.jpg" muted loop playsinline preload="none"></video>
+            <span class="ac-ref"><img src="assets/img/refs/app_auto_show_13_r1.webp" alt="conditioning reference view" loading="lazy"></span>
+          </div>
+        </div>
+      </div>
+      <div class="as-slide" data-i="6">
+        <div class="as-row">
+          <div class="auto-cell">
+            <video src="assets/video/app_auto_show_17.mp4" poster="assets/video/app_auto_show_17.jpg" muted loop playsinline preload="none"></video>
+            <span class="ac-ref"><img src="assets/img/refs/app_auto_show_17_r1.webp" alt="conditioning reference view" loading="lazy"></span>
+          </div>
+          <div class="auto-cell">
+            <video src="assets/video/app_auto_show_18.mp4" poster="assets/video/app_auto_show_18.jpg" muted loop playsinline preload="none"></video>
+            <span class="ac-ref"><img src="assets/img/refs/app_auto_show_18_r1.webp" alt="conditioning reference view" loading="lazy"></span>
+          </div>
+          <div class="auto-cell">
+            <video src="assets/video/app_auto_show_19.mp4" poster="assets/video/app_auto_show_19.jpg" muted loop playsinline preload="none"></video>
+            <span class="ac-ref"><img src="assets/img/refs/app_auto_show_19_r1.webp" alt="conditioning reference view" loading="lazy"></span>
+          </div>
+          <div class="auto-cell">
+            <video src="assets/video/app_auto_show_20.mp4" poster="assets/video/app_auto_show_20.jpg" muted loop playsinline preload="none"></video>
+            <span class="ac-ref"><img src="assets/img/refs/app_auto_show_20_r1.webp" alt="conditioning reference view" loading="lazy"></span>
+          </div>
+          <div class="auto-cell">
+            <video src="assets/video/app_auto_show_21.mp4" poster="assets/video/app_auto_show_21.jpg" muted loop playsinline preload="none"></video>
+            <span class="ac-ref"><img src="assets/img/refs/app_auto_show_21_r1.webp" alt="conditioning reference view" loading="lazy"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h4 class="mini-title">Comparison against baselines</h4>
+    <div class="cmp" id="autoCmp">
+      <div class="cmp-shape"><span class="cs-lab">shape</span>
+        <button type="button" data-src="assets/video/app_auto_cmp_2.mp4" class="on">Cabbage</button>
+        <button type="button" data-src="assets/video/app_auto_cmp_3.mp4">Croissant</button>
+        <button type="button" data-src="assets/video/app_auto_cmp_4.mp4">Tyre</button>
+        <button type="button" data-src="assets/video/app_auto_cmp_5.mp4">Fire hydrant</button>
+        <button type="button" data-src="assets/video/app_auto_cmp_6.mp4">Gourd</button>
+        <button type="button" data-src="assets/video/app_auto_cmp_7.mp4">Sea urchin</button>
+        <button type="button" data-src="assets/video/app_auto_cmp_8.mp4">Sea turtle</button>
+        <button type="button" data-src="assets/video/app_auto_cmp_9.mp4">Savoy cabbage</button>
+      </div>
+      <div class="cmp-strip"><video id="cmpStrip" muted loop playsinline preload="none"></video></div>
+      <div class="cmp-legend">
+        <span class="is-ref">Reference</span>
+        <span>Paint 3D</span>
+        <span>TexGen</span>
+        <span>MV-Adapter</span>
+        <span>TRELLIS</span>
+        <span>Hunyuan 2.1</span>
+        <span class="is-ours">Ours</span>
+      </div>
+    </div>
+    <p class="caption">All seven panels are one video, so every method shown is the same frame of the same turntable.</p>
+
+    <div class="table-wrap compact">
+      <table>
+        <thead><tr><th>Method</th><th>LPIPS &darr;</th><th>FID &darr;</th><th>DreamSim &darr;</th><th>CMMD &darr;</th></tr></thead>
+        <tbody>
+          <tr><td>TexGen</td><td>&mdash;</td><td>106.92</td><td>0.436</td><td>0.883</td></tr>
+          <tr><td>MV-Adapter</td><td>0.358</td><td>76.98</td><td>0.370</td><td>0.666</td></tr>
+          <tr><td>Hunyuan 2.1</td><td>0.383</td><td class="best">73.70</td><td>0.437</td><td>0.494</td></tr>
+          <tr><td>TRELLIS 2</td><td>0.356</td><td>102.22</td><td>0.411</td><td>0.545</td></tr>
+          <tr class="ours"><td>GLOSS (ours)</td><td class="best">0.302</td><td>80.26</td><td class="best">0.344</td><td class="best">0.478</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="caption">Per-mesh setting, averaged over 10 shapes. Best in orange.</p>
+    <p class="caption">Paint 3D appears in the turnarounds below but not in the table &mdash; it is shown for visual comparison only.</p>
+  </div>
+</section>
+
+<section class="section" id="bibtex">
+  <div class="wrap">
+    <div class="section-head"><span class="section-num">05</span><h2 class="section-title">BibTeX</h2></div>
+    <pre class="bib">@inproceedings{cai2026gloss,
+  title     = {GLOSS: Geometric Local Self-Similarity Learning for
+               Faithful Reference-Guided Texture Fill},
+  author    = {Cai, Chenyue and Hu, Anita and Lucas, James and
+               Rusinkiewicz, Szymon},
+  booktitle = {SIGGRAPH Asia 2026 Conference Papers},
+  year      = {2026},
+  doi       = {10.1145/3829340.3842197}
+}</pre>
+
+    <div class="footer">
+      <p><b>3D model credits.</b> The interactive models are CC-BY-4.0 assets from Sketchfab, retextured with GLOSS:
+        <a href="https://sketchfab.com/3d-models/dragon-head-remodel-72d40af2425b4b5eafcf693818eff189" target="_blank" rel="noopener">Dragon Head (Remodel)</a>
+        by <a href="https://sketchfab.com/dgeraci" target="_blank" rel="noopener">dgeraci</a>,
+        Koi Fish by <a href="https://sketchfab.com/7plus" target="_blank" rel="noopener">7PLUS</a>,
+        Cabbage by <a href="https://sketchfab.com/meerschaumdigital" target="_blank" rel="noopener">Meerschaum Digital</a>,
+        Big Leaf by <a href="https://sketchfab.com/Kade.Wolfe" target="_blank" rel="noopener">Kade.Wolfe</a>,
+        Red Lizard by <a href="https://sketchfab.com/bohdan_lvov" target="_blank" rel="noopener">Bohdan Lvov</a>,
+        Desert Tortoise by <a href="https://sketchfab.com/Nyilonelycompany" target="_blank" rel="noopener">Nyilonelycompany</a>, and
+        Photogrammetry &mdash; Gourd by <a href="https://sketchfab.com/porridgealmanac" target="_blank" rel="noopener">Danielle</a> &mdash;
+        each licensed under <a href="http://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC-BY-4.0</a>.
+        Shapes shown only as rendered images (croissant, sea urchin, bread, and others) are not redistributed as
+        3D files.</p>
+      <p>&copy; Princeton University &amp; NVIDIA &middot; SIGGRAPH Asia 2026</p>
+    </div>
+  </div>
+</section>
+
+<script src="app.js"></script>
 </body>
-
 </html>
