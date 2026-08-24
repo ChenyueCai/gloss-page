@@ -257,6 +257,68 @@
     </p>
     <div class="plate"><img src="assets/img/fig_attention_slide.png" alt="Batch multi-attention visualisation: albedo, normals and the attention output for a target patch across reference patches"></div>
     <p class="caption">Rows: albedo, normals, and where attention lands for the target patch.</p>
+
+    <h3 class="sub-title"><span class="sub-num">3.2.2</span> Geometry conditioned local inpainting</h3>
+    <p class="section-lede">
+      Each fill is conditioned on geometry as well as colour. The reference contributes its albedo and its
+      surface normals; the target contributes the region left to fill and its own normals. The model reads
+      the two together, so the synthesised patch follows the shape it lands on rather than being pasted flat.
+    </p>
+    <div class="geo-row">
+      <figure class="geo-panel">
+        <div class="geo-cols">
+        <img src="assets/img/geo/p1_ref_albedo.webp" alt="dragon horn and scales: reference albedo" loading="lazy">
+        <img src="assets/img/geo/p1_ref_geom.webp" alt="dragon horn and scales: reference geometry" loading="lazy">
+        <i class="geo-gap" aria-hidden="true"></i>
+        <img src="assets/img/geo/p1_tar_albedo.webp" alt="dragon horn and scales: target albedo" loading="lazy">
+        <img src="assets/img/geo/p1_tar_geom.webp" alt="dragon horn and scales: target geometry" loading="lazy">
+        <img src="assets/img/geo/p1_result.webp" alt="dragon horn and scales: result" loading="lazy">
+        </div>
+        <div class="geo-labels">
+          <span>Ref Albedo</span><span>Ref Geometry</span><i class="geo-gap" aria-hidden="true"></i><span>Tar Albedo</span><span>Tar Geometry</span><span>Result</span>
+        </div>
+      </figure>
+      <figure class="geo-panel">
+        <div class="geo-cols">
+        <img src="assets/img/geo/p2_ref_albedo.webp" alt="dragon neck scales: reference albedo" loading="lazy">
+        <img src="assets/img/geo/p2_ref_geom.webp" alt="dragon neck scales: reference geometry" loading="lazy">
+        <i class="geo-gap" aria-hidden="true"></i>
+        <img src="assets/img/geo/p2_tar_albedo.webp" alt="dragon neck scales: target albedo" loading="lazy">
+        <img src="assets/img/geo/p2_tar_geom.webp" alt="dragon neck scales: target geometry" loading="lazy">
+        <img src="assets/img/geo/p2_result.webp" alt="dragon neck scales: result" loading="lazy">
+        </div>
+        <div class="geo-labels">
+          <span>Ref Albedo</span><span>Ref Geometry</span><i class="geo-gap" aria-hidden="true"></i><span>Tar Albedo</span><span>Tar Geometry</span><span>Result</span>
+        </div>
+      </figure>
+      <figure class="geo-panel">
+        <div class="geo-cols">
+        <img src="assets/img/geo/p3_ref_albedo.webp" alt="leaf veins: reference albedo" loading="lazy">
+        <img src="assets/img/geo/p3_ref_geom.webp" alt="leaf veins: reference geometry" loading="lazy">
+        <i class="geo-gap" aria-hidden="true"></i>
+        <img src="assets/img/geo/p3_tar_albedo.webp" alt="leaf veins: target albedo" loading="lazy">
+        <img src="assets/img/geo/p3_tar_geom.webp" alt="leaf veins: target geometry" loading="lazy">
+        <img src="assets/img/geo/p3_result.webp" alt="leaf veins: result" loading="lazy">
+        </div>
+        <div class="geo-labels">
+          <span>Ref Albedo</span><span>Ref Geometry</span><i class="geo-gap" aria-hidden="true"></i><span>Tar Albedo</span><span>Tar Geometry</span><span>Result</span>
+        </div>
+      </figure>
+      <figure class="geo-panel">
+        <div class="geo-cols">
+        <img src="assets/img/geo/p4_ref_albedo.webp" alt="lizard scales and eye: reference albedo" loading="lazy">
+        <img src="assets/img/geo/p4_ref_geom.webp" alt="lizard scales and eye: reference geometry" loading="lazy">
+        <i class="geo-gap" aria-hidden="true"></i>
+        <img src="assets/img/geo/p4_tar_albedo.webp" alt="lizard scales and eye: target albedo" loading="lazy">
+        <img src="assets/img/geo/p4_tar_geom.webp" alt="lizard scales and eye: target geometry" loading="lazy">
+        <img src="assets/img/geo/p4_result.webp" alt="lizard scales and eye: result" loading="lazy">
+        </div>
+        <div class="geo-labels">
+          <span>Ref Albedo</span><span>Ref Geometry</span><i class="geo-gap" aria-hidden="true"></i><span>Tar Albedo</span><span>Tar Geometry</span><span>Result</span>
+        </div>
+      </figure>
+    </div>
+    <p class="caption">Four shapes, four rows each. Scroll sideways for the rest.</p>
   </div>
 </section>
 

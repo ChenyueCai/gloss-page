@@ -1104,3 +1104,66 @@ pre.bib {
      keep them from setting a floor under the page width */
   .table-wrap { max-width: 100%; }
 }
+
+
+/* ============================================================
+   3.2.2 · Geometry conditioned local inpainting
+   -------------------------------------------------------------
+   Four shapes, each a five-column strip: the reference pair, then
+   the target pair and the fill. The source figure arrived as one
+   sheet on white, so it is sliced into its five columns and laid
+   out here instead — the gaps are then page ground rather than
+   paper, and the labels are real text that follows the palette.
+   The wider gap between column two and three is the seam in the
+   original: everything left of it describes the reference,
+   everything right of it the target.
+
+   One row, scrolled sideways, at every width. Four five-column
+   panels cannot be read stacked, and shrinking them to fit is
+   what would make the texture detail worthless.
+   ============================================================ */
+.geo-row {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 520px;
+  gap: 26px;
+  margin-top: 30px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scroll-padding-left: 2px;
+  padding-bottom: 8px;
+}
+.geo-panel { margin: 0; scroll-snap-align: start; }
+
+/* the images and their labels share one track list, so a label
+   cannot drift out from under the column it names */
+.geo-cols,
+.geo-labels {
+  display: grid;
+  grid-template-columns: 1fr 1fr 14px 1fr 1fr 1fr;
+  gap: 4px;
+}
+.geo-cols img {
+  width: 100%; display: block;
+  border-radius: 3px;
+  background: var(--bg);
+}
+.geo-labels { margin-top: 10px; }
+.geo-labels span {
+  font-family: var(--font-mono); font-size: var(--fs-mono-xs);
+  letter-spacing: 0.03em; color: var(--ink-3);
+  text-align: center; white-space: nowrap;
+}
+.geo-labels span:last-child { color: var(--accent-2-soft); }  /* the result is the claim */
+.geo-gap { display: block; }
+
+@media (max-width: 700px) {
+  /* same full-bleed treatment as the 4.x rows */
+  .geo-row {
+    margin-left: -22px; margin-right: -22px;
+    padding-left: 22px; padding-right: 22px;
+    scroll-padding-left: 22px;
+    gap: 20px;
+  }
+}
