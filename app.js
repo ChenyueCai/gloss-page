@@ -151,8 +151,14 @@ window.__ga = window.__ga || function (u) { return u; };
       play();
       setInterval(play, PERIOD);   // runs continuously, on screen or not
       // a resize changes every measured position, so restart cleanly
-      let rt;
+      // Only a WIDTH change moves the letters. On a phone, scrolling
+      // slides the URL bar away, which fires resize on every scroll with
+      // an unchanged width - replaying on that restarted the assembly
+      // mid-scroll, so the animation never appeared to finish.
+      let rt, lastW = window.innerWidth;
       window.addEventListener('resize', () => {
+        if (window.innerWidth === lastW) return;
+        lastW = window.innerWidth;
         clearTimeout(rt);
         rt = setTimeout(play, 220);
       });
@@ -344,4 +350,61 @@ window.__ga = window.__ga || function (u) { return u; };
     new IntersectionObserver(([e]) => (e.isIntersecting ? start() : stop()),
       { threshold: 0.4 }).observe(swaps);
   } else { start(); }
+})();
+
+/* ---------------------------------------------------------------------------
+   Autoplay, on phones
+   ---------------------------------------------------------------------------
+   Every clip here is muted, looping and playsinline, which is the combination
+   iOS accepts without a gesture - but it accepts it only when the device is
+   not in Low Power Mode. In Low Power Mode Safari refuses the play() outright
+   and the poster sits there, which is what "the videos don't autoplay" looks
+   like in practice. There is no way to detect that state, and no way to
+   override it; the one thing that does lift it is a real user gesture.
+
+   So: kick the hero once on load, and arm a one-shot listener that retries
+   every visible clip on the first touch, click or scroll. On a device that was
+   already autoplaying this changes nothing - play() on a playing video is a
+   no-op. On a device that refused, the page starts moving the moment the
+   reader does.
+   --------------------------------------------------------------------------- */
+(function () {
+  const kick = (v) => { if (v && v.paused) v.play().catch(() => {}); };
+  const inView = (v) => {
+    const r = v.getBoundingClientRect();
+    return r.top < innerHeight && r.bottom > 0 && r.width > 0;
+  };
+  const retryVisible = () => {
+    document.querySelectorAll('video').forEach((v) => {
+      // don't fight the section controls: they park clips on purpose by
+      // marking the cell they belong to as not live
+      const cell = v.closest('[data-live]');
+      if (cell && cell.dataset.live === '0') return;
+      if (inView(v)) kick(v);
+    });
+  };
+
+  const hero = document.querySelector('.hero-bg');
+  if (hero) {
+    kick(hero);
+    hero.addEventListener('loadeddata', () => kick(hero), { once: true });
+  }
+
+  let armed = true;
+  const unlock = () => {
+    if (!armed) return;
+    armed = false;
+    retryVisible();
+    ['touchstart', 'pointerdown', 'click', 'scroll'].forEach((e) =>
+      window.removeEventListener(e, unlock)
+    );
+  };
+  ['touchstart', 'pointerdown', 'click', 'scroll'].forEach((e) =>
+    window.addEventListener(e, unlock, { passive: true })
+  );
+
+  // returning to the tab suspends and does not always resume playback
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) retryVisible();
+  });
 })();

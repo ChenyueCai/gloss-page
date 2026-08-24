@@ -986,3 +986,79 @@ pre.bib {
 
 /* the lede should not crowd the figure it introduces */
 .section-lede + .plate, .section-lede + .figure-duo { margin-top: 30px; }
+
+
+/* ============================================================
+   PHONE  (≤ 700px)
+   -------------------------------------------------------------
+   Everything above this width is deliberately left alone: the
+   desktop and tablet layout is locked and no rule in this block
+   can reach it. Below it the fixed column counts stop being a
+   layout and start being a problem — on a 393px screen the five
+   blend cells measure 54px each, the six transfer cells 42px, and
+   the three demo videos 103px. Nothing at that size is watchable,
+   so this is the one tier where the grids are allowed to reflow.
+   ============================================================ */
+@media (max-width: 700px) {
+
+  /* --- one thing at a time, full width -----------------------
+     These are the cases where the reader is meant to watch a
+     single clip rather than compare several, so a column split
+     buys nothing and costs all the resolution. */
+  .video-grid.three-up,
+  .video-grid,
+  .concepts,
+  .pbr-split,
+  .viewer-row { grid-template-columns: minmax(0, 1fr); }
+
+  /* --- contact sheets, two up --------------------------------
+     Here the comparison IS the content, so the grid survives —
+     just at a count that leaves each cell big enough to read. */
+  .pbr-grid.three,
+  .pbr-grid.three.tri-side,
+  .pbr-grid.four,
+  .pbr-grid.five,
+  .pbr-grid.six,
+  .as-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  /* --- the stepper controls ----------------------------------
+     A 32px disc that sat comfortably on a 260px desktop cell
+     covers a third of a phone cell. Shrink the disc, but keep the
+     tap target at 44px with a transparent halo — the control gets
+     smaller to look at, not harder to hit. */
+  .pbr-arrow { width: 26px; height: 26px; }
+  .pbr-arrow svg { width: 13px; height: 13px; }
+  .pbr-arrow.prev { left: 5px; }
+  .pbr-arrow.next { right: 5px; }
+  .pbr-arrow::after { content: ""; position: absolute; inset: -9px; }
+  .pbr-dots { padding: 7px 0 9px; }
+
+  /* --- the baseline filmstrip --------------------------------
+     Seven methods in one frame cannot be squeezed into 349px and
+     still be a comparison, and the legend has to stay locked to
+     the panels it labels. So the strip and its legend scroll
+     together instead of shrinking. */
+  .cmp-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .cmp-scroll .cmp-strip,
+  .cmp-scroll .cmp-legend { min-width: 620px; }
+
+  /* --- hero --------------------------------------------------
+     vh on iOS counts the URL bar that is about to slide away, so
+     the hero jumps as you scroll. svh is the stable height. */
+  .hero { min-height: 78svh; }
+  /* the wide framing puts the dragon off the left edge of a phone, leaving
+     the hero looking like an empty dark panel - pull the crop back toward
+     the subject so there is something behind the title */
+  .hero-bg { object-position: 42% 44%; }
+  .hero-inner { padding-top: 54px; padding-bottom: 40px; }
+  /* the scrim was aimed left for a wide screen; on a phone the
+     title spans the full width, so shade the whole bottom */
+  .hero-scrim {
+    background: linear-gradient(to top, var(--bg) 2%, rgba(13,18,14,0.88) 40%,
+                                rgba(13,18,14,0.66) 72%, rgba(13,18,14,0.52) 100%);
+  }
+
+  /* the wide result tables already scroll inside .table-wrap;
+     keep them from setting a floor under the page width */
+  .table-wrap { max-width: 100%; }
+}
